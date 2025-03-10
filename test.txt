@@ -1,1 +1,226 @@
-test
+                         ┌─┐                      ┌─┐                                                                                                                                                        
+                         ║"│                      ║"│                                                                                                                                                        
+                         └┬┘                      └┬┘                                                                                                                                                        
+                         ┌┼┐                      ┌┼┐                                                                                                                                                        
+                          │                        │                                 ┌─────┐                                                ┌───┐                                      ┌───────────────┐     
+                         ┌┴┐                      ┌┴┐                                │Front│                                                │API│                                      │Base de Données│     
+                     Utilisateur            Administrateur                           └──┬──┘                                                └─┬─┘                                      └───────┬───────┘     
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │       ╔═══════════╗                                 │                                                │             
+══════════════════════════╪════════════════════════╪════════════════════════════════════╪═══════╣ Connexion ╠═════════════════════════════════╪════════════════════════════════════════════════╪═════════════
+                          │                        │                                    │       ╚═══════════╝                                 │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                  Saisie des identifiants                    │                                                     │                                                │             
+                          │────────────────────────────────────────────────────────────>│                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │           Vérification des identifiants             │                                                │             
+                          │                        │                                    │────────────────────────────────────────────────────>│                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │          Recherche de l'utilisateur            │             
+                          │                        │                                    │                                                     │───────────────────────────────────────────────>│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │         Résultat (trouvé/non trouvé)           │             
+                          │                        │                                    │                                                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+          ╔══════╤════════╪════════════════════════╪════════════════════════════════════╪═════════════════════════════════════════════════════╪═══════════╗                                    │             
+          ║ ALT  │  Identifiants valides           │                                    │                                                     │           ║                                    │             
+          ╟──────┘        │                        │                                    │                                                     │           ║                                    │             
+          ║               │                        │                                    │  Authentification réussie (JWT, cookies httpOnly)   │           ║                                    │             
+          ║               │                        │                                    │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │           ║                                    │             
+          ║               │                        │                                    │                                                     │           ║                                    │             
+          ║               │                 Redirection vers l'accueil                  │                                                     │           ║                                    │             
+          ║               │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │           ║                                    │             
+          ╠═══════════════╪════════════════════════╪════════════════════════════════════╪═════════════════════════════════════════════════════╪═══════════╣                                    │             
+          ║ [Identifiants invalides]               │                                    │                                                     │           ║                                    │             
+          ║               │                        │                                    │             Erreur d'authentification               │           ║                                    │             
+          ║               │                        │                                    │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │           ║                                    │             
+          ║               │                        │                                    │                                                     │           ║                                    │             
+          ║               │                      Message d'erreur                       │                                                     │           ║                                    │             
+          ║               │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │           ║                                    │             
+          ╚═══════════════╪════════════════════════╪════════════════════════════════════╪═════════════════════════════════════════════════════╪═══════════╝                                    │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                               ╔════╧════════════════════════════════╗                    │                                                │             
+══════════════════════════╪════════════════════════╪═══════════════════════════════╣ Inscription d'un nouvel utilisateur ╠════════════════════╪════════════════════════════════════════════════╪═════════════
+                          │                        │                               ╚════╤════════════════════════════════╝                    │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │            Remplit le formulaire d'inscription              │                                                     │                                                │             
+                          │────────────────────────────────────────────────────────────>│                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │Envoie pseudo, email, mot de passe, texte motivation │                                                │             
+                          │                        │                                    │────────────────────────────────────────────────────>│                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │Sauvegarde des données avec statut "en attente" │             
+                          │                        │                                    │                                                     │───────────────────────────────────────────────>│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                 Confirmation                   │             
+                          │                        │                                    │                                                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │       Demande envoyée, en attente validation        │                                                │             
+                          │                        │                                    │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                  Message de confirmation                    │                                                     │                                                │             
+                          │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                 ╔══╧══════════════════════════════╗                      │                                                │             
+══════════════════════════╪════════════════════════╪═════════════════════════════════╣ Validation par l'administrateur ╠══════════════════════╪════════════════════════════════════════════════╪═════════════
+                          │                        │                                 ╚══╤══════════════════════════════╝                      │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │Accède à la liste des candidatures  │                                                     │                                                │             
+                          │                        │───────────────────────────────────>│                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │        Demande des utilisateurs en attente          │                                                │             
+                          │                        │                                    │────────────────────────────────────────────────────>│                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │       Récupère les demandes en attente         │             
+                          │                        │                                    │                                                     │───────────────────────────────────────────────>│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │             Retourne les demandes              │             
+                          │                        │                                    │                                                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │          Envoie la liste des candidatures           │                                                │             
+                          │                        │                                    │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │Approuve ou rejette une candidature │                                                     │                                                │             
+                          │                        │───────────────────────────────────>│                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │        Envoie décision (approbation/rejet)          │                                                │             
+                          │                        │                                    │────────────────────────────────────────────────────>│                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │        Met à jour le statut du compte          │             
+                          │                        │                                    │                                                     │───────────────────────────────────────────────>│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                 Confirmation                   │             
+                          │                        │                                    │                                                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │               Confirme la validation                │                                                │             
+                          │                        │                                    │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+          ╔══════╤════════╪════════════════════════╪════════════════════════════════════╪════════════╗                                        │                                                │             
+          ║ ALT  │  Candidature acceptée           │                                    │            ║                                        │                                                │             
+          ╟──────┘        │                        │                                    │            ║                                        │                                                │             
+          ║               │                 Notification d'approbation                  │            ║                                        │                                                │             
+          ║               │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │            ║                                        │                                                │             
+          ╠═══════════════╪════════════════════════╪════════════════════════════════════╪════════════╣                                        │                                                │             
+          ║ [Candidature rejetée]                  │                                    │            ║                                        │                                                │             
+          ║               │                   Notification de rejet                     │            ║                                        │                                                │             
+          ║               │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │            ║                                        │                                                │             
+          ╚═══════════════╪════════════════════════╪════════════════════════════════════╪════════════╝                                        │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                ╔═══╧══════════════════════════════╗                      │                                                │             
+══════════════════════════╪════════════════════════╪════════════════════════════════╣ Réinitialisation du mot de passe ╠══════════════════════╪════════════════════════════════════════════════╪═════════════
+                          │                        │                                ╚═══╤══════════════════════════════╝                      │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │        Demande de réinitialisation de mot de passe          │                                                     │                                                │             
+                          │────────────────────────────────────────────────────────────>│                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │              Vérification de l'email                │                                                │             
+                          │                        │                                    │────────────────────────────────────────────────────>│                                                │             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │             Recherche de l'email               │             
+                          │                        │                                    │                                                     │───────────────────────────────────────────────>│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │           Résultat (existe ou non)             │             
+                          │                        │                                    │                                                     │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─│             
+                          │                        │                                    │                                                     │                                                │             
+                          │                        │                                    │                                                     │                                                │             
+          ╔══════╤════════╪════════════════════════╪════════════════════════════════════╪═════════════════════════════════════════════════════╪═══════════╗                                    │             
+          ║ ALT  │  Email valide                   │                                    │                                                     │           ║                                    │             
+          ╟──────┘        │                        │                                    │                                                     │           ║                                    │             
+          ║               │                        │                                    │  Génération et envoi du lien de réinitialisation    │           ║                                    │             
+          ║               │                        │                                    │<────────────────────────────────────────────────────│           ║                                    │             
+          ║               │                        │                                    │                                                     │           ║                                    │             
+          ║               │                        Email envoyé                         │                                                     │           ║                                    │             
+          ║               │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │           ║                                    │             
+          ╠═══════════════╪════════════════════════╪════════════════════════════════════╪═════════════════════════════════════════════════════╪═══════════╣                                    │             
+          ║ [Email invalide]                       │                                    │                                                     │           ║                                    │             
+          ║               │                        │                                    │              Erreur, email non trouvé               │           ║                                    │             
+          ║               │                        │                                    │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │           ║                                    │             
+          ║               │                        │                                    │                                                     │           ║                                    │             
+          ║               │                      Message d'erreur                       │                                                     │           ║                                    │             
+          ║               │<─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ │                                                     │           ║                                    │             
+          ╚═══════════════╪════════════════════════╪════════════════════════════════════╪═════════════════════════════════════════════════════╪═══════════╝                                    │             
+                     Utilisateur            Administrateur                           ┌──┴──┐                                                ┌─┴─┐                                      ┌───────┴───────┐     
+                         ┌─┐                      ┌─┐                                │Front│                                                │API│                                      │Base de Données│     
+                         ║"│                      ║"│                                └─────┘                                                └───┘                                      └───────────────┘     
+                         └┬┘                      └┬┘                                                                                                                                                        
+                         ┌┼┐                      ┌┼┐                                                                                                                                                        
+                          │                        │                                                                                                                                                         
+                         ┌┴┐                      ┌┴┐                                                                                                                                                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                         @startuml
+actor Utilisateur
+actor Administrateur
+participant "Front" as Page
+participant "API" as Serveur
+participant "Base de Données" as BDD
+
+== Connexion ==
+Utilisateur -> Page : Saisie des identifiants
+Page -> Serveur : Vérification des identifiants
+Serveur -> BDD : Recherche de l'utilisateur
+BDD --> Serveur : Résultat (trouvé/non trouvé)
+alt Identifiants valides
+    Serveur --> Page : Authentification réussie (JWT, cookies httpOnly)
+    Page --> Utilisateur : Redirection vers l'accueil
+else Identifiants invalides
+    Serveur --> Page : Erreur d'authentification
+    Page --> Utilisateur : Message d'erreur
+end
+
+== Inscription d'un nouvel utilisateur ==
+Utilisateur -> Page : Remplit le formulaire d'inscription
+Page -> Serveur : Envoie pseudo, email, mot de passe, texte motivation
+Serveur -> BDD : Sauvegarde des données avec statut "en attente"
+BDD --> Serveur : Confirmation
+Serveur --> Page : Demande envoyée, en attente validation
+Page --> Utilisateur : Message de confirmation
+
+== Validation par l'administrateur ==
+Administrateur -> Page : Accède à la liste des candidatures
+Page -> Serveur : Demande des utilisateurs en attente
+Serveur -> BDD : Récupère les demandes en attente
+BDD --> Serveur : Retourne les demandes
+Serveur --> Page : Envoie la liste des candidatures
+Administrateur -> Page : Approuve ou rejette une candidature
+Page -> Serveur : Envoie décision (approbation/rejet)
+Serveur -> BDD : Met à jour le statut du compte
+BDD --> Serveur : Confirmation
+Serveur --> Page : Confirme la validation
+alt Candidature acceptée
+    Page --> Utilisateur : Notification d'approbation
+else Candidature rejetée
+    Page --> Utilisateur : Notification de rejet
+end
+
+== Réinitialisation du mot de passe ==
+Utilisateur -> Page : Demande de réinitialisation de mot de passe
+Page -> Serveur : Vérification de l'email
+Serveur -> BDD : Recherche de l'email
+BDD --> Serveur : Résultat (existe ou non)
+alt Email valide
+    Serveur -> Page : Génération et envoi du lien de réinitialisation
+    Page --> Utilisateur : Email envoyé
+else Email invalide
+    Serveur --> Page : Erreur, email non trouvé
+    Page --> Utilisateur : Message d'erreur
+end
+@enduml
