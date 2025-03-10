@@ -166,7 +166,7 @@
 
 
 
-                         @startuml
+@startuml
 actor Utilisateur
 actor Administrateur
 participant "Front" as Page
