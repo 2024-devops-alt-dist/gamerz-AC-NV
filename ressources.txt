@@ -1,0 +1,9 @@
+https://mongodb.github.io/node-mongodb-native/4.5/
+
+https://www.mongodb.com/developer/languages/javascript/getting-started-with-mongodb-and-mongoose/#creating-a-schema-and-model
+
+https://cloud.mongodb.com/v2/67cff801990f640f69df12d7#/metrics/replicaSet/67cff8ee1f982f4e4bd2f777/explorer/gamerz-db/users/find
+
+https://excalidraw.com/#json=sVR2m-fgwk9XMQJbBB1cv,iBmX0yqFX_Wr3l9JvYIkpQ
+
+https://github.com/2024-devops-alt-dist/gamerz

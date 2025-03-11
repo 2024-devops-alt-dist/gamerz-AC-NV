@@ -1,73 +1,53 @@
-//import { removeListener } from "process";
+// const mongoose =require('mongoose');
+import mongoose from 'mongoose';
+import User from './models/userModel.js';
+// require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 
-require('dotenv').config();
-const {MongoClient} = require('mongodb');
-console.log('1',process.env.MONGO_URL);
 
-//const express = require('express');
-const client = new MongoClient(process.env.MONGO_URL);
-console.log('2',process.env.MONGO_URL);
+
+//connectDB().catch(err => console.error(err));
 
 async function connectDB() {
-    await client.connect();
-    console.log('Connected to MongoDB');
-    const db = client.db('gamerz-db');
-    const collection = db.collection('users');
-    //create = ok
-    // try{
-    //     const insertUser = await collection.insertOne({
-    //     username: 'Roberto', 
-    //     password: 'securepassword', 
-    //     email: 'roberto@gmail.com',
-    //     avatar: 'https://images.icon-icons.com/1378/PNG/512/avatardefault_92824.png', 
-    //     status: 'pending', 
-    //     role : 'admin',
-    //     birthdate: new Date('1990-01-01')
-    //     });
-    //     console.log('Inserted user: ', insertUser);
+    try{ 
+        //await mongoose.connect(process.env.MONGO_URL);
+        // const User =mongoose.model('User',{
+    //     name: String,
+    //     email: String,
+    //     password: String,
+    //     role: String,
+    //     avatar: String,
+    //     status: String,
+    //     birthdate: Date
 
-    // } catch (e) {
-    //     throw e;
-    // }
-    //read
-    try{
-        // const findUser = await collection.findOne({username:'Gerardo'});
-        // console.log('Found user: ', findUser);
-       // const findAdmins = await collection.find({role:'admin'});
-      //  console.log(await findAdmins.toArray());
-    } catch (e) {
-        throw e;
-    }
-    //update
-    try{
-        // const updateGerardo = await collection.updateOne({username:'Fransisco'}, {$set: {role: 'user'}});
-        // console.log(updateGerardo);
-        const updateRoles = await collection.updateMany({role:'user'}, {$set: {role: 'admin'}});
-        console.log(updateRoles);
-
-    } catch (e) {
-        throw e;
-    }
-    //delete
-    try{
-         const deleteUser = await collection.deleteOne({username:'Fransisco'});
-        console.log(deleteUser);
-       // const deleteAllUsers = await collection.deleteMany({});
-       // console.log(deleteAllUsers);
-       //deleteEvryOne pour tout !
-       
-
-    } catch (e) {
-        throw e;
-    }
-
-    return ('done');
+    // });
+        //connect à mongodb
+        const mongoUrl = process.env.MONGO_URL;
+        if (!mongoUrl) {
+            throw new Error('MONGO_URL is not defined in the environment variables');
+        }
+        await mongoose.connect(mongoUrl);
+        console.log('✅ Connecté à MongoDB');
+    //création d'un utilisateur
+        const firstUser = new User({
+        username: 'francis',
+        email: 'dalida@example.com',
+        password: 'password123',
+        role: 'admin',
+        avatar: 'https://example.com/john-avatar.jpg',
+        status: 'active',
+        birthdate: new Date('1990-01-01')
+        });
+//sauvegarde de l'utilisateur
+        const firstUserSave = await firstUser.save();
+        console.log('firstuser', firstUserSave);
+        } catch (err) {
+    console.error(err);
+        } 
 }
 
 connectDB()
-.then(console.log)
-.catch(console.error)
-.finally(() => client.close());
 
 
 

@@ -1,4 +1,18 @@
 {
+  "type": "module",
+  "ts-node": {
+    "loader": "ts-node/esm"
+  },
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/app.js",
+  "scripts": {
+    "dev": "node --loader ts-node/esm src/app.ts",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node dist/app.js"
+  },
   "dependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.10",
@@ -11,20 +25,11 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.14.2",
-    "mongoose": "^8.12.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "mongoose": "^8.12.1"
   },
-  "name": "back-end",
-  "version": "1.0.0",
-  "main": "src/app.ts",
-  "scripts": {
-  "dev": "ts-node-dev --respawn src/app.ts",
-  "start": "node dist/app.js",
-  "build": "tsc"
-},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "ts-node-dev": "^2.0.0"
+  }
 }

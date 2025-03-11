@@ -9,30 +9,6 @@ const userSchema = new Schema({
     avatar: { type: String, default: 'https://images.icon-icons.com/1378/PNG/512/avatardefault_92824.png' },
     status: { type: String, default: 'pending' },
     birthdate: { type: Date, required: true }
-    // activationToken: { type: String },
-    // refreshToken: { type: String },
-    // resetToken: { type: String },
-    // expireToken: { type: Date },
-    // followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
-    // following: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
-    // notifications: [
-    //     {
-    //         type: { type: String },
-    //         senderId: { type: mongoose.Types.ObjectId, ref: 'User' },
-    //         text: { type: String },
-    //         viewProfile: { type: Boolean, default: false },
-    //         postId: { type: mongoose.Types.ObjectId, ref: 'Post' },
-    //     },
-    // ],
-    // messages: [
-    //     {
-    //         sender: { type: mongoose.Types.ObjectId, ref: 'User' },
-    //         text: { type: String },
-    //         media: { type: String },
-    //         call: { type: Object },
-    //     },
-    // ],
-
 }, { timestamps: true
 
 });
