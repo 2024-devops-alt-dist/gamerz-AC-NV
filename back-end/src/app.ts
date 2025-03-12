@@ -1,7 +1,7 @@
 import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
-import userRoutes from './routes/usersRoutes.js'; 
+import userRoutes from './routes/usersRoutes.ts'; 
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
@@ -12,8 +12,16 @@ app.use(express.json());// accepter le format json sur les requetes
 app.use(cors());
 
 
-const path = `/`;
-app.use(path, userRoutes);
+
+app.use((req, res, next) => {
+    console.log(`📢 Requête reçue: ${req.method} ${req.url}`);
+    next();
+});
+
+app.use("/users", userRoutes);
+
+// 🔍 Voir toutes les routes enregistrées dans Express
+console.log("🔍 Routes enregistrées :", app._router.stack.map((r: any) => r.route && r.route.path));
 
 async function connectDB() {
     try{ 
