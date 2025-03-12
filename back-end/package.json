@@ -8,10 +8,10 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "node --loader ts-node/esm src/app.ts",
+    "dev": "node --loader ts-node/esm src/server.ts",
     "build": "tsc",
     "prestart": "npm run build",
-    "start": "node dist/app.js"
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@types/express": "^5.0.0",
