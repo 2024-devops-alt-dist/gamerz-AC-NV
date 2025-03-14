@@ -11,5 +11,5 @@ const messageSchema = new Schema({
 
 });
 
-const Message = model('Channel', messageSchema);
+const Message = model('Message', messageSchema);
 export default Message;

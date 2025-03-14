@@ -2,6 +2,8 @@ import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
 import userRoutes from './routes/usersRoutes.ts'; 
+import messagesRoutes from './routes/messagesRoutes.ts'; 
+import channelsRoutes from './routes/channelsRoutes.ts'; 
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
@@ -21,6 +23,8 @@ app.use((req, res, next) => {
 
 
 app.use("/users", userRoutes);
+app.use("/messages", messagesRoutes);
+app.use("/channels", channelsRoutes);
 
 // 🔍 Voir toutes les routes enregistrées dans Express
 console.log("🔍 Routes enregistrées :", app._router.stack.map((r: any) => r.route && r.route.path));
@@ -41,6 +45,5 @@ async function connectDB() {
 }
 
 connectDB()
-
 
 export default app;

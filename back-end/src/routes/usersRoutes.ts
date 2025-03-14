@@ -8,6 +8,7 @@ console.log("getOneUser:", getOneUser);
 const router = Router();
 
 
+
 router.post("/", postUser);
 router.get("/", getUser);
 router.get("/:id", getOneUser);
