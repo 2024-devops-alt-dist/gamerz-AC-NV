@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Channel from '../models/channelModel.js';
+import Channel from '../models/channelModel.ts';
 
 // Créer un channel
 export const postChannel = async (req: Request, res: Response) => {
