@@ -1,6 +1,8 @@
 import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
+import cookieParser from "cookie-parser";
+import authRoutes from './routes/authRoutes.ts';
 import userRoutes from './routes/usersRoutes.ts'; 
 import messagesRoutes from './routes/messagesRoutes.ts'; 
 import channelsRoutes from './routes/channelsRoutes.ts'; 
@@ -11,12 +13,15 @@ dotenv.config();
 
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:5006",
+    credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
+})); 
 
 
 
 app.use((req, res, next) => {
-    console.log("🔍 Routes enregistrées :", app._router.stack.map((r: any) => r.route && r.route.path));
+    //console.log("🔍 Routes enregistrées :", app._router.stack.map((r: any) => r.route && r.route.path));
     console.log(`📢 Requête reçue: ${req.method} ${req.url}`);
     next();
 });
@@ -25,6 +30,7 @@ app.use((req, res, next) => {
 app.use("/users", userRoutes);
 app.use("/messages", messagesRoutes);
 app.use("/channels", channelsRoutes);
+app.use("/auth", authRoutes);
 
 
 async function connectDB() {
