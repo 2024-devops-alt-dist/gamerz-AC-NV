@@ -1,6 +1,11 @@
+
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+dotenv.config();
 
 export const authUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -21,6 +26,26 @@ export const authUser = async (req: Request, res: Response, next: NextFunction):
             return;
         }
 
+        // genener le token JWT
+        const token = jwt.sign(
+            { userId: user._id, username: user.username, role: user.role },
+            process.env.JWT_SECRET_KEY as string, 
+            { expiresIn: '24h' }
+        );
+    //     const refreshToken = jwt.sign(
+    //         { userId: user._id, username: user.username, role: user.role },
+    //         process.env.JWT_SECRET_KEY as string,
+    //         { expiresIn: '7d' }
+    //     );
+    //    console.log("refreshToken", refreshToken)
+        console.log("token", token)
+        res.cookie('token', token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+        console.log("🍪 Cookie envoyé", cookieParser);
+
+
         res.status(200).json({ message: 'Authentification réussie' });
 
     } catch (error) {
@@ -28,3 +53,16 @@ export const authUser = async (req: Request, res: Response, next: NextFunction):
         next(error);
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
