@@ -22,8 +22,6 @@ app.use((req, res, next) => {
 
 app.use("/users", userRoutes);
 
-// 🔍 Voir toutes les routes enregistrées dans Express
-console.log("🔍 Routes enregistrées :", app._router.stack.map((r: any) => r.route && r.route.path));
 
 async function connectDB() {
     try{ 
