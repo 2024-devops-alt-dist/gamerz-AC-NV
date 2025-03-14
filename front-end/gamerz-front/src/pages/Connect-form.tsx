@@ -1,0 +1,42 @@
+import Hero from "../components/Hero.tsx";
+
+
+function Connexion() {
+	return (
+		<>
+			<div className="w-full h-screen flex items-center justify-center">
+				<form className="w-full md:w-1/3 rounded-lg bg-white/10">
+					<h1 className="text-4xl text-center text-gray-200 mt-10 mb-10">Connexion</h1>
+					<div className="px-12 pb-10">
+						<div className="w-full mb-2">
+							<div className="flex items-center">
+								<input
+									type="text"
+									placeholder="Adresse email"
+									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
+								/>
+							</div>
+							<div className="flex items-center mt-10">
+								<input
+									type="password"
+									placeholder="Mot de passe"
+									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
+								/>
+							</div>
+						</div>
+						
+						<button
+							type="submit"
+							className="w-full py-2 mt-8 rounded bg-[#1EDCB3] hover:bg-[#00E7B5] text-gray-100 focus:outline-none">
+							Connexion
+						</button>
+					</div>
+				</form>
+			</div>
+		</>
+	);
+}
+
+
+
+export default Connexion;
