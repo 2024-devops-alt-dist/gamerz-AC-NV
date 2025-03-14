@@ -13,5 +13,5 @@ router.get("/", getMessages);
 router.get("/:id", getOneMessage);
 router.get("/:channel", getChannelMessages);
 router.delete("/:id", deleteMessage);
-//router.put("/:id", updateMessage);
+router.put("/:id", updateMessage);
 export default router;

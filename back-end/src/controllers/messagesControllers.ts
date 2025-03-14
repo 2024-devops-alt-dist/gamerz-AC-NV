@@ -31,20 +31,30 @@ export const getMessages = async (req: Request, res: Response) => {
 };
 
 // update user
-export const updateMessage = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+export const updateMessage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { id } = req.params;
+
+        // Vérifie si l'ID est valide
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            res.status(400).json({ message: "ID invalide" });
+            return;
+        }
+
         const updatedMessage = await Message.findByIdAndUpdate(id, req.body, { new: true });
 
         if (!updatedMessage) {
-            return res.status(404).json({ message: "Message non trouvé" });
+            res.status(404).json({ message: "Message non trouvé" });
+            return;
         }
 
         res.status(200).json(updatedMessage);
     } catch (error) {
-        res.status(500).json({ message: "Erreur serveur", error });
+        console.error("Erreur updateMessage:", error);
+        next(error); // Passe l'erreur au middleware d'erreur
     }
 };
+
 
 
 
