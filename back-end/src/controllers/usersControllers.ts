@@ -1,14 +1,20 @@
 import { Request, Response, NextFunction, response } from 'express';
 import User from '../models/userModel.js';
-import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+console.log("allo allo bcrypt", bcrypt);
+//import mongoose from 'mongoose';
 
 // Créer un user
 export const postUser = async (req: Request, res: Response) => {
     try {
-        console.log("données", req.body);
+        console.log("données du postuser", req.body);
+        // Hash du pw avant de créer le user
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        console.log("password hash:", hashedPassword);
+
         const newUser = new User({
             username: req.body.username,
-            password: req.body.password,
+            password: hashedPassword,
             email: req.body.email,
             birthdate: new Date(req.body.birthdate),
             avatar: req.body.avatar,
@@ -18,6 +24,8 @@ export const postUser = async (req: Request, res: Response) => {
 
         const savedUser = await newUser.save();
         res.status(200).json(savedUser);
+        console.log("apres hash données", req.body);
+
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error });
     }

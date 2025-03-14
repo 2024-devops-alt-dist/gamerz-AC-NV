@@ -26,8 +26,6 @@ app.use("/users", userRoutes);
 app.use("/messages", messagesRoutes);
 app.use("/channels", channelsRoutes);
 
-// 🔍 Voir toutes les routes enregistrées dans Express
-console.log("🔍 Routes enregistrées :", app._router.stack.map((r: any) => r.route && r.route.path));
 
 async function connectDB() {
     try{ 
