@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router";
 import HomePage from "./pages/HomePage.tsx";
 import Connexion from "./pages/Connect-form.tsx";
 import Inscription from "./pages/Inscription.tsx";
+import ChannelsList from "./pages/ChannelsList.tsx";
 
 
 
@@ -20,6 +21,7 @@ function App() {
     <Header title="Gamerz"/>
     <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/channelslist" element={<ChannelsList />} />
         <Route path="/login" element={<Connexion />} />
         <Route path="/inscription" element={<Inscription />} />
       </Routes>

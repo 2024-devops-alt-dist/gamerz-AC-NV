@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, response } from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
+//import { sendAdminEmail } from '../utils/sendAdminEmail.ts'; 
 console.log("allo allo bcrypt", bcrypt);
 //import mongoose from 'mongoose';
 
@@ -19,10 +20,13 @@ export const postUser = async (req: Request, res: Response) => {
             birthdate: new Date(req.body.birthdate),
             avatar: req.body.avatar,
             role: req.body.role,
-            status: req.body.status
+           // status: req.body.status
+            status: 'pending',
             });
 
         const savedUser = await newUser.save();
+        
+        //await sendAdminEmail(savedUser); // Envoi de l'email à l'administrateur
         res.status(200).json(savedUser);
         console.log("apres hash données", req.body);
 
@@ -99,3 +103,33 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+
+
+
+// Fonction pour approuver un utilisateur
+export const approveUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { id } = req.params;
+    try {
+      const updatedUser = await User.findByIdAndUpdate(id, { status: "approved" }, { new: true });
+      if (!updatedUser) {
+        res.status(404).send("Utilisateur non trouvé");
+      }
+      res.status(200).send("Utilisateur approuvé avec succès");
+    } catch (err) {
+      res.status(500).send("Erreur serveur");
+    }
+  };
+  
+  // Fonction pour refuser un utilisateur
+  export const refuseUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { id } = req.params;
+    try {
+      const updatedUser = await User.findByIdAndUpdate(id, { status: "refused" }, { new: true });
+      if (!updatedUser) {
+        res.status(404).send("Utilisateur non trouvé");
+      }
+      res.status(200).send("Utilisateur refusé");
+    } catch (err) {
+      res.status(500).send("Erreur serveur");
+    }
+  };
