@@ -1,4 +1,3 @@
-import Hero from "../components/Hero.tsx";
 import { Link } from "react-router";
 
 
