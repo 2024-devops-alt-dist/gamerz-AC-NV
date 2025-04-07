@@ -6,7 +6,7 @@ function Inscription() {
 		<>
 			<div className="w-full h-screen flex items-center justify-center">
 				<form className="w-full md:w-1/3 rounded-lg bg-white/10">
-					<h1 className="text-4xl text-center text-gray-200 mt-10 mb-10">Connexion</h1>
+					<h1 className="text-4xl text-center text-gray-200 mt-10 mb-10">Inscription</h1>
 					<div className="px-12 pb-10">
 						<div className="w-full mb-2">
 							<div className="flex items-center">
