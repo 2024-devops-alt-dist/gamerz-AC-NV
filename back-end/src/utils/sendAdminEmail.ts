@@ -26,7 +26,7 @@ const sender = {
   name: "Mailtrap Test",
 };
 const recipients = [
-  "senga.ds@gmail.com",
+  "gamerz_simplon@outlook.fr",
 ];
 
 transport
