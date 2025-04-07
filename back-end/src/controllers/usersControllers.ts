@@ -20,6 +20,7 @@ export const postUser = async (req: Request, res: Response) => {
             birthdate: new Date(req.body.birthdate),
             avatar: req.body.avatar,
             role: req.body.role,
+            motivation: req.body.motivation,
            // status: req.body.status
             status: 'pending',
             });

@@ -38,3 +38,22 @@ transport
   })
   .then(console.log, console.error);
 
+  // export const sendAdminEmail = async (user: IUser) => {
+//   try {
+//     const mailOptions = {
+//       from: sender,
+//       to: recipients,
+//       subject: "Nouvelle demonde d'inscription",
+//       text: `Une nouvelle demande d'inscription : ${user.username} (${user.email})`,
+//       html: `Une nouvelle demande d'inscription attend votre aprobation :</p><p><strong>${user.username}</strong> (${user.email})<br>
+//       message: ${user.motivation}<br>
+//       <strong>Avatar:</strong> ${user.avatar}<br>
+//       </p>`,
+//     };
+
+//     await transport.sendMail(mailOptions);
+//     console.log("Email envoyé avec succès !");
+//   } catch (error) {
+//     console.error("Erreur lors de l'envoi de l'email :", error);
+//   }
+// }
