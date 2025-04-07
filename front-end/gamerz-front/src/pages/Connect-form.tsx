@@ -1,4 +1,5 @@
-//import Hero from "../components/Hero.tsx";
+import { Link } from "react-router";
+
 
 
 function Connexion() {
@@ -60,6 +61,8 @@ function Connexion() {
 							className="w-full py-2 mt-8 rounded bg-[#1EDCB3] hover:bg-[#00E7B5] text-gray-100 focus:outline-none">
 							Connexion
 						</button>
+						<Link to="/inscription"><a href="" className="text-center text-[#1EDCB3] mt-4 block">
+							Vous n'avez pas de compte ? Inscrivez-vous ici</a></Link>
 					</div>
 				</form>
 			</div>
