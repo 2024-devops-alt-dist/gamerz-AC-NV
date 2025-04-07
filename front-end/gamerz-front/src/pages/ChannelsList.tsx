@@ -1,10 +1,35 @@
 import { Link } from "react-router";
 import ChannelCard from "../components/ChannelCard.tsx";
-
 import HeroSearch from "../components/HeroSearch.tsx";
+import { useState, useEffect } from "react";
 
+interface Channel {
+  channelName: string;
+    connectedUsers: number;
+    url: string;
 
-function HomePage() {
+}
+
+function ChannelsList() {
+    const [channel, setChannel] = useState<Channel[]>([]);
+
+    useEffect(() => {
+        fetchChannels();
+    }, []);
+
+    const fetchChannels = async () => {
+        console.log("fetchChannels");
+
+        // On récupère les données
+        const response = await fetch("http://localhost:5006/channels");
+
+        // On transforme les données en JSON
+        const data = await response.json();
+
+        // On met les données dans le state
+        setChannel(data);
+    };
+
   return (
     <>
     <HeroSearch/>
@@ -27,14 +52,12 @@ function HomePage() {
                           
                         </div>
                     </li>
-                    <ChannelCard/>
-                    <ChannelCard/>
-                    <ChannelCard/>
-                    <ChannelCard/>
-                    <ChannelCard/>
-                    <ChannelCard/>
-                    <ChannelCard/>
-                    <ChannelCard/>
+
+                    {channel.map((channel: Channel) => {
+  return (
+    <ChannelCard channelName={channel.channelName} connectedUsers={channel.connectedUsers} url={channel.url} />
+  );
+})}
                     
 </ul>
             </div>
@@ -44,4 +67,4 @@ function HomePage() {
 
 
 
-export default HomePage;
+export default ChannelsList;
