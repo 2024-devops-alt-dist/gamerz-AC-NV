@@ -1,8 +1,7 @@
 import Hero from "../components/Hero.tsx";
-import { Link } from "react-router";
 
 
-function Connexion() {
+function Inscription() {
 	return (
 		<>
 			<div className="w-full h-screen flex items-center justify-center">
@@ -24,15 +23,27 @@ function Connexion() {
 									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
 								/>
 							</div>
+							<div className="flex items-center mt-10">
+								<input
+									type="text"
+									placeholder="Pseudo"
+									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
+								/>
+							</div>
+							<div className="flex items-center mt-10">
+								<input
+									type="textarea"
+									placeholder="Vos motivations en quelques mots..."
+									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
+								/>
+							</div>
 						</div>
 						
 						<button
 							type="submit"
 							className="w-full py-2 mt-8 rounded bg-[#1EDCB3] hover:bg-[#00E7B5] text-gray-100 focus:outline-none">
-							Connexion
+							Postuler
 						</button>
-						<Link to="/inscription"><a href="" className="text-center text-[#1EDCB3] mt-4 block">
-							Vous n'avez pas de compte ? Inscrivez-vous ici</a></Link>
 					</div>
 				</form>
 			</div>
@@ -42,4 +53,4 @@ function Connexion() {
 
 
 
-export default Connexion;
+export default Inscription;

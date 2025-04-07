@@ -4,6 +4,7 @@ import Footer from "./components/Footers";
 import { Routes, Route } from "react-router";
 import HomePage from "./pages/HomePage.tsx";
 import Connexion from "./pages/Connect-form.tsx";
+import Inscription from "./pages/Inscription.tsx";
 
 
 
@@ -20,6 +21,7 @@ function App() {
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Connexion />} />
+        <Route path="/inscription" element={<Inscription />} />
       </Routes>
     <Footer title="Gamerz"/>
     </>
