@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function ChannelCard({ id_brewery, name, country, city }: { id_brewery: number; name: string; country: string; city: string; }) {
+function ChannelCard() {
     return (
         <>
         <li className='relative flex w-full gap-4  bg-[#3F6965] rounded-[20px] hover:transition'>

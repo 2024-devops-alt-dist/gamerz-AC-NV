@@ -1,4 +1,3 @@
-import Header from "../components/Header.tsx";
 import { Link } from "react-router";
 import ChannelCard from "../components/ChannelCard.tsx";
 
