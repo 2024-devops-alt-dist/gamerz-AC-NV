@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import User from '../models/userModel.js';
 import { ObjectId } from 'mongoose';
+import { User as MailtrapUser } from 'mailtrap/dist/types/api/accounts.js';
 
 dotenv.config();
 
@@ -13,8 +14,10 @@ dotenv.config();
 
 
 const transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
+host: process.env.MAILTRAP_HOST || "sandbox.smtp.mailtrap.io",
+port: Number(process.env.MAILTRAP_PORT) || 2525,
+
+
   auth: {
     user: process.env.MAILTRAP_USER,
     pass: process.env.MAILTRAP_PASS,
@@ -26,15 +29,23 @@ const sender = {
   name: "Mailtrap Test",
 };
 const recipients = [
-  "senga.ds@gmail.com",
+  "gamerz_simplon@outlook.fr",
 ];
 
-transport
-  .sendMail({
-    from: sender,
-    to: recipients,
-    subject: "New user registration",
-    text: "A new user has registered on the platform.",
-  })
-  .then(console.log, console.error);
 
+  export const sendAdminEmail = async (user: any) => {
+  try {
+    const mailOptions = {
+      from: sender,
+      to: recipients,
+      subject: "Nouvelle demonde d'inscription",
+      text: `Une nouvelle demande d'inscription attend votre aprobation :
+      </p>`,
+    };
+
+    await transport.sendMail(mailOptions);
+    console.log("Email envoyé avec succès !");
+  } catch (error) {
+    console.error("Erreur lors de l'envoi de l'email :", error);
+  }
+}

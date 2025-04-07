@@ -7,3 +7,9 @@ https://cloud.mongodb.com/v2/67cff801990f640f69df12d7#/metrics/replicaSet/67cff8
 https://excalidraw.com/#json=sVR2m-fgwk9XMQJbBB1cv,iBmX0yqFX_Wr3l9JvYIkpQ
 
 https://github.com/2024-devops-alt-dist/gamerz
+
+
+https://reqbin.com/code/javascript/lcpj87js/javascript-fetch-with-credentials
+
+https://jwtsecret.com/generate
+https://jwt.io/

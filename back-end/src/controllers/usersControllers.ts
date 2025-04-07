@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, response } from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
-//import { sendAdminEmail } from '../utils/sendAdminEmail.ts'; 
+import { sendAdminEmail } from '../utils/sendAdminEmail.js';
 console.log("allo allo bcrypt", bcrypt);
 //import mongoose from 'mongoose';
 
@@ -20,13 +20,14 @@ export const postUser = async (req: Request, res: Response) => {
             birthdate: new Date(req.body.birthdate),
             avatar: req.body.avatar,
             role: req.body.role,
+            motivation: req.body.motivation,
            // status: req.body.status
             status: 'pending',
             });
 
         const savedUser = await newUser.save();
         
-        //await sendAdminEmail(savedUser); // Envoi de l'email à l'administrateur
+        await sendAdminEmail(savedUser); // Envoi de l'email à l'admin
         res.status(200).json(savedUser);
         console.log("apres hash données", req.body);
 

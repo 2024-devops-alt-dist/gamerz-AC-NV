@@ -15,8 +15,10 @@ const userSchema = new Schema({
     role: { type: String, required: true, default: 'user' },
     avatar: { type: String, default: 'https://images.icon-icons.com/1378/PNG/512/avatardefault_92824.png' },
     status: { type: String, default: 'pending' },
-    birthdate: { type: Date, required: true }
-}, { timestamps: true
+    birthdate: { type: Date, required: true },
+    motivation: { type: String, required: true },
+}, 
+{ timestamps: true
 
 });
 
