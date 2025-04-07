@@ -14,11 +14,11 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
-    origin: ["http://localhost:5174", "http://localhost:5006"],
+    origin: ["http://localhost:5173", "http://localhost:5006"],
     credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
 })); 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5174"); 
+    res.header("Access-Control-Allow-Origin", "http://localhost:5173"); 
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.header("Access-Control-Allow-Credentials", "true");

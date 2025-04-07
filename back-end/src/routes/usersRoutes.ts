@@ -1,7 +1,7 @@
 import {Router} from "express";
 
 //import usersControllers from "../controllers/usersControllers.js";
-import { postUser, getUser, getOneUser, deleteUser, updateUser } from "../controllers/usersControllers.ts";
+import { postUser, getUser, getOneUser, deleteUser, updateUser,approveUser, refuseUser } from "../controllers/usersControllers.ts";
 
 console.log("getOneUser:", getOneUser);
 
@@ -14,4 +14,7 @@ router.get("/", getUser);
 router.get("/:id", getOneUser);
 router.delete("/:id", deleteUser);
 router.put("/:id", updateUser);
+router.put("/approve/:id", approveUser);
+router.put("/refuse/:id", refuseUser);
+
 export default router;
