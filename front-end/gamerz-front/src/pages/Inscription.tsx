@@ -31,13 +31,24 @@ function Inscription() {
 								/>
 							</div>
 							<div className="flex items-center mt-10">
-								<input
-									type="textarea"
+								<textarea
+								
 									placeholder="Vos motivations en quelques mots..."
 									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
 								/>
 							</div>
 						</div>
+						<div className="flex items-center mt-10">
+    <input
+        type="checkbox"
+        id="terms"
+        className="mr-2"
+    />
+    <label htmlFor="terms" className="text-white">
+        Je suis majeur et j'accepte les conditions d'utilisation
+    </label>
+</div>
+
 						
 						<button
 							type="submit"
