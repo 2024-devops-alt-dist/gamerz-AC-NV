@@ -19,7 +19,7 @@ function App() {
   return (
   <>
 
-    <Header title="Gamerz"/>
+    <Header/>
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/channelslist" element={<ChannelsList />} />
