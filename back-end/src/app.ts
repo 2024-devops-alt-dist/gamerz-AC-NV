@@ -9,8 +9,11 @@ import channelsRoutes from './routes/channelsRoutes.ts';
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
+import { Server } from 'socket.io';
+import http from 'http';
 dotenv.config();
 
+// Removed redundant declaration of io
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
@@ -23,6 +26,16 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.header("Access-Control-Allow-Credentials", "true");
     next();
+});
+
+
+
+const server = http.createServer(app);
+
+const io = new Server(server);
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
 });
 
 

@@ -4,8 +4,7 @@ function ChannelCard({channelName, connectedUsers, url }: { channelName: string;
     return (
         <>
         <li className='relative flex w-full gap-4  bg-[#3F6965] rounded-[20px] hover:transition'>
-                       
-                       <Link to={'/'} className='w-30 overflow-hidden rounded-left-[20px]'>
+                 <Link to={'/'} className='w-30 overflow-hidden rounded-left-[20px]'>
                             <img src="public/thumbnail.png" alt="Valorant" className='object-cover rounded-l-[20px] my-auto w-30 h-30' />
                         </Link>
                         <div className='flex flex-col px-2 py-3'>

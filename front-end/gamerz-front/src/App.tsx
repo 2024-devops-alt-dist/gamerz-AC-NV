@@ -7,6 +7,7 @@ import Connexion from "./pages/Connect-form.tsx";
 import Inscription from "./pages/Inscription.tsx";
 import ChannelsList from "./pages/ChannelsList.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
+import Channel from "./pages/Channel.tsx";
 
 
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/login" element={<Connexion />} />
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/channel" element={<Channel />} />
       </Routes>
     <Footer title="Gamerz"/>
     </>

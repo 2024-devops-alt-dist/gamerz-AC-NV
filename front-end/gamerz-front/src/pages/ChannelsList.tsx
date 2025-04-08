@@ -35,8 +35,7 @@ function ChannelsList() {
     <HeroSearch/>
 
             <div className='p-20 '>
-                <ul className='grid grid-cols-1 gap-8 px-1 md:grid-cols-2 
-         lg:grid-cols-3 md:p-2 xl:p-4'>
+                <ul className='grid grid-cols-1 gap-8 px-1 md:grid-cols-2 lg:grid-cols-3 md:p-2 xl:p-4'>
                     <li className='relative flex justify-center w-full gap-4 rounded-[20px] border-solide border-1 border-[#1EDCB3] hover:transition'>
                        
                       
