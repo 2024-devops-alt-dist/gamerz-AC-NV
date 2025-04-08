@@ -84,6 +84,10 @@ function Dashboard() {
     (user) =>
       user.username.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase())
+  ).sort((a, b) => {
+    const order = ["pending", "approved", "refused"];
+    return order.indexOf(a.status) - order.indexOf(b.status);
+  }
   );
 
   return (
