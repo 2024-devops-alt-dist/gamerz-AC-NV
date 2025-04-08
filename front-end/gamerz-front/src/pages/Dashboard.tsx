@@ -129,13 +129,15 @@ function Dashboard() {
                     <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                       {user.email}
                     </td>
-                    <td className="px-4 sm:px-6 py-4 whitespace-nowrap italic text-xs sm:text-sm">
+                  <td className="px-4 sm:px-6 py-4 italic text-xs sm:text-sm max-h-[100px] overflow-y-auto w-[600px]">
+                    <div className="max-h-[100px] overflow-y-auto">
                       {user.motivation}
-                    </td>
+                    </div>
+                  </td>
                     <td className="px-4 sm:px-6 py-4 whitespace-nowrap capitalize">
-                      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-evenly">
                         <select
-                          className="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded"
+                          className="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded "
                           value={user.status}
                           onChange={(e) =>
                             handleStatusChange(user._id, e.target.value)
