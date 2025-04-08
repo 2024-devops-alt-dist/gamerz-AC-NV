@@ -38,15 +38,15 @@ export const postUser = async (req: Request, res: Response) => {
 
 // get user
 export const getUser = async (req: Request, res: Response) => {
+    const { status } = req.query;  // recup statut
+    const filter = status ? { status } : {};  // filtre par statut
     try {
-        const user = await User.find();
-        res.status(200).json(user);
+        const users = await User.find(filter);    
+        res.status(200).json(users);   
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error });
     }
 };
-
-
 
 // get one user
 export const getOneUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -71,18 +71,23 @@ export const getOneUser = async (req: Request, res: Response, next: NextFunction
 // // update user
 export const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { id } = req.params;
-        const user = await User.findByIdAndUpdate(id);
-        if (!user) {
-            res.status(404).json({ message: "User not found" });
-            return;
-        }
-        res.status(200).json(user);
+      const { id } = req.params;
+      const updateFields = req.body;
+  
+      const user = await User.findByIdAndUpdate(id, updateFields, { new: true });
+  
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+  
+      res.status(200).json(user);
     } catch (error) {
-        console.error("Erreur dupdateUser:", error);
-        next(error);
+      console.error("Erreur updateUser:", error);
+      next(error);
     }
-};
+  };
+  
 
 
 // delete user
