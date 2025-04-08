@@ -25,6 +25,7 @@ function Inscription() {
             },
             body: JSON.stringify({ email, username, password, birthdate, avatar, motivation, role, status }),
         });
+		alert("Inscription réussie ! Vous recevrez prochainement un mail de confirmation d'acceptation.");
 
         if (!response.ok) {
             throw new Error("Inscription échouée");
