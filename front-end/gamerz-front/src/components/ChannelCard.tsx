@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function ChannelCard({}: {}) {
+function ChannelCard({channelName, connectedUsers, url }: { channelName: string; connectedUsers: number; url: string; }) {
     return (
         <>
         <li className='relative flex w-full gap-4  bg-[#3F6965] rounded-[20px] hover:transition'>
@@ -11,15 +11,15 @@ function ChannelCard({}: {}) {
                         <div className='flex flex-col px-2 py-3'>
                             <div className='w-full'>
                                 <Link to={'/'} className='font-semibold md:text-4xl text-[#F1E1A7]'>
-                                    <h3>VALORANT</h3>
+                                    <h3>{channelName}</h3>
                                 </Link>
                                 <p className='text-sm text-white '>
-                                  216 joueurs
+                                {connectedUsers} joueurs
                                 </p>
                             </div>
                             <div className='flex items-left justify-left mt-1 gap-1'>
                                 <div className='mt-1 text-sm text-gray-900 bg-[#1EDCB3] rounded-full px-6 py-1'>
-                                    Rejoindre
+                                <Link to={url}>  Rejoindre</Link>
                                 </div>
                                 
                             </div>

@@ -133,7 +133,7 @@ function Dashboard() {
                     <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                       {user.email}
                     </td>
-                   <td className="px-4 sm:px-6 py-4 italic text-xs sm:text-sm max-h-[100px] overflow-y-auto w-[600px]">
+                  <td className="px-4 sm:px-6 py-4 italic text-xs sm:text-sm max-h-[100px] overflow-y-auto w-[600px]">
                     <div className="max-h-[100px] overflow-y-auto">
                       {user.motivation}
                     </div>
