@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, response } from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
-//import { sendAdminEmail } from '../utils/sendAdminEmail.ts'; 
+import { sendAdminEmail } from '../utils/sendAdminEmail.js';
 console.log("allo allo bcrypt", bcrypt);
 //import mongoose from 'mongoose';
 
@@ -20,13 +20,14 @@ export const postUser = async (req: Request, res: Response) => {
             birthdate: new Date(req.body.birthdate),
             avatar: req.body.avatar,
             role: req.body.role,
+            motivation: req.body.motivation,
            // status: req.body.status
             status: 'pending',
             });
 
         const savedUser = await newUser.save();
         
-        //await sendAdminEmail(savedUser); // Envoi de l'email à l'administrateur
+        await sendAdminEmail(savedUser); // Envoi de l'email à l'admin
         res.status(200).json(savedUser);
         console.log("apres hash données", req.body);
 
@@ -37,15 +38,15 @@ export const postUser = async (req: Request, res: Response) => {
 
 // get user
 export const getUser = async (req: Request, res: Response) => {
+    const { status } = req.query;  // recup statut
+    const filter = status ? { status } : {};  // filtre par statut
     try {
-        const user = await User.find();
-        res.status(200).json(user);
+        const users = await User.find(filter);    
+        res.status(200).json(users);   
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error });
     }
 };
-
-
 
 // get one user
 export const getOneUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -70,18 +71,23 @@ export const getOneUser = async (req: Request, res: Response, next: NextFunction
 // // update user
 export const updateUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { id } = req.params;
-        const user = await User.findByIdAndUpdate(id);
-        if (!user) {
-            res.status(404).json({ message: "User not found" });
-            return;
-        }
-        res.status(200).json(user);
+      const { id } = req.params;
+      const updateFields = req.body;
+  
+      const user = await User.findByIdAndUpdate(id, updateFields, { new: true });
+  
+      if (!user) {
+        res.status(404).json({ message: "User not found" });
+        return;
+      }
+  
+      res.status(200).json(user);
     } catch (error) {
-        console.error("Erreur dupdateUser:", error);
-        next(error);
+      console.error("Erreur updateUser:", error);
+      next(error);
     }
-};
+  };
+  
 
 
 // delete user

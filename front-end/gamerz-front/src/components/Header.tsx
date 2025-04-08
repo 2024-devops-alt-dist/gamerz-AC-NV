@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+//import { NavLink } from "react-router";
 import { Link } from "react-router";
 
 
@@ -6,7 +6,7 @@ import { Link } from "react-router";
 
 
 
-function Header({title}: {title: string; }) {
+function Header() {
 
     return (
 
@@ -28,6 +28,11 @@ function Header({title}: {title: string; }) {
 	  </svg>
 	</button>
     </Link>
+      <Link to="/dashboard">
+        <button className="inline-flex items-center bg-[#1EDCB3] border-0 py-1 px-3 ml-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Admin
+
+        </button> 
+      </Link>
   </div>
 </header>
     );

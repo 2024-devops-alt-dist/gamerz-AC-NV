@@ -12,18 +12,20 @@ function Inscription() {
         const password = formData.get("password") as string;
         const birthdate = formData.get("birthdate") as string;
         const avatar = formData.get("avatar") as string;
+		const motivation = formData.get("motivation") as string;
         const role = "user";
         const status = 'pending';
 
-        console.log("Données envoyées :", { email, username, password, birthdate, avatar, role, status });
+        console.log("Données envoyées :", { email, username, password, birthdate, avatar, motivation, role, status });
 
         const response = await fetch('http://localhost:5006/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, username, password, birthdate, avatar, role, status }),
+            body: JSON.stringify({ email, username, password, birthdate, avatar, motivation, role, status }),
         });
+		alert("Inscription réussie ! Vous recevrez prochainement un mail de confirmation d'acceptation.");
 
         if (!response.ok) {
             throw new Error("Inscription échouée");
@@ -81,6 +83,7 @@ function Inscription() {
 							
 							<div className="flex items-center mt-10">
 								<textarea
+								name="motivation"
 								
 									placeholder="Vos motivations en quelques mots..."
 									className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white"
