@@ -6,7 +6,12 @@ import authRoutes from './routes/authRoutes.ts';
 import userRoutes from './routes/usersRoutes.ts'; 
 import messagesRoutes from './routes/messagesRoutes.ts'; 
 import channelsRoutes from './routes/channelsRoutes.ts'; 
+import { Socket } from "socket.io";
+import { Server } from "socket.io";
+import http from "http";
+import socketController from "./controllers/socketsControllers.ts";
 //import {router as userRoutes} from './routes/usersRoutes.js';
+
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -38,6 +43,41 @@ app.use("/users", userRoutes);
 app.use("/messages", messagesRoutes);
 app.use("/channels", channelsRoutes);
 app.use("/auth", authRoutes);
+
+
+//SOCKET.IO
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5000"],
+        methods: ["GET", "POST"],
+        credentials: true //  header à true => permet d'envoyer des cookies
+    }
+});
+
+server.listen(5000, () => {
+    console.log("SOCKET IO:  Serveur démarré sur le port 5000");
+});
+
+// io.on("connection", (socket: Socket) => {
+//     console.log(`🔌 Client connecté: ${socket.id}`);
+
+//     socket.on("disconnect", () => {
+//         console.log(`❌ Client déconnecté: ${socket.id}`);
+//     });
+
+//     socket.on("join", (channelId: string) => {
+//         console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
+//         socket.join(channelId);
+//     });
+
+//     socket.on("message", (message: string) => {
+//         console.log(`💬 Message reçu: ${message}`);
+//         io.emit("message", message);
+//     });
+// });
+socketController(io); // Passer l'instance de io au socketController
+
 
 
 async function connectDB() {
