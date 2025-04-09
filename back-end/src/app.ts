@@ -9,7 +9,8 @@ import channelsRoutes from './routes/channelsRoutes.ts';
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
-import socketController from "./controllers/socketsControllers.ts";
+//import socketController from "./controllers/socketsControllers.ts";
+
 //import {router as userRoutes} from './routes/usersRoutes.js';
 
 //import User from './models/userModel.js';
@@ -59,24 +60,26 @@ server.listen(5000, () => {
     console.log("SOCKET IO:  Serveur démarré sur le port 5000");
 });
 
-// io.on("connection", (socket: Socket) => {
-//     console.log(`🔌 Client connecté: ${socket.id}`);
+io.on("connection", (socket: Socket) => {
+    console.log(`🔌 Client connecté: ${socket.id}`);
 
-//     socket.on("disconnect", () => {
-//         console.log(`❌ Client déconnecté: ${socket.id}`);
-//     });
+    socket.on("disconnect", () => {
+        console.log(`❌ Client déconnecté: ${socket.id}`);
+    });
 
-//     socket.on("join", (channelId: string) => {
-//         console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
-//         socket.join(channelId);
-//     });
+    socket.on("join", (channelId: string) => {
+        console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
+        socket.join(channelId);
+    });
 
-//     socket.on("message", (message: string) => {
-//         console.log(`💬 Message reçu: ${message}`);
-//         io.emit("message", message);
-//     });
-// });
-socketController(io); // Passer l'instance de io au socketController
+    socket.on("message", (message: string) => {
+        console.log(`💬 Message reçu: ${message}`);
+        // Emit the message to all connected clients
+        io.emit("message", message);
+    });
+});
+
+//socketController(io); // Passer l'instance de io au socketController
 
 
 
@@ -97,4 +100,4 @@ async function connectDB() {
 
 connectDB()
 
-export default app;
+export default app; 
