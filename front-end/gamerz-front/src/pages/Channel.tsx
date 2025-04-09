@@ -1,48 +1,43 @@
-
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useEffect, useRef } from "react";
+import { io, Socket } from "socket.io-client";
 
 function Channel() {
-    const [message, setMessage] = useState(""); // Pour stocker le message à envoyer
-    const [messages, setMessages] = useState<string[]>([]); // Pour afficher les messages reçus
-    const socket = io("http://localhost:5000"); // Connexion Socket.io
+    const socketRef = useRef<Socket | null>(null);
 
-    // Initialisation de la connexion et gestion des messages
     useEffect(() => {
-        // Écouter les messages du serveur
-        socket.on('message', (msg) => {
-            setMessages(prevMessages => [...prevMessages, msg]); // Ajouter au tableau de messages
+        socketRef.current = io("http://localhost:5002", {
+            withCredentials: true,
+            transports: ["websocket"],
         });
 
-        // Nettoyer la connexion lorsque le composant est démonté
-        return () => {
-            socket.disconnect();
-        };
-    }, [socket]);
+        socketRef.current.on("connect", () => {
+            console.log("✅ Connecté à Socket.IO");
+        });
 
-    // Fonction pour envoyer un message
-    const sendMessage = () => {
-        if (message.trim()) {
-            socket.emit('message', message);
-            console.log("Message envoyé:", message); // Afficher le message dans la console
-            setMessage(""); // Réinitialiser le champ de message
-        }
+        socketRef.current.on("message", (message: string) => {
+            const messageList = document.getElementById("messages") as HTMLUListElement;
+            const li = document.createElement("li");
+            li.innerText = message;
+            messageList.appendChild(li);
+        });
+
+        return () => {
+            socketRef.current?.disconnect();
+        };
+    }, []);
+
+    const send = () => {
+        const input = document.getElementById("textMessage") as HTMLInputElement;
+        socketRef.current?.emit("message", input.value);
+        input.value = "";
     };
 
     return (
-        <div className="channel">
-            <div className="messages">
-                {messages.map((msg, index) => (
-                    <p key={index}>{msg}</p>
-                ))}
-            </div>
-            <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Écris ton message"
-            />
-            <button onClick={sendMessage}>Envoyer</button>
+        <div>
+            <h1>Channel</h1>
+            <ul id="messages"></ul>
+            <input type="text" id="textMessage" placeholder="Écris un message..."  className="w-full border rounded px-3 py-2 text-gray-700 focus:outline-none bg-white" />
+            <button onClick={send} className="w-full py-2 mt-8 rounded bg-[#1EDCB3] hover:bg-[#00E7B5] text-gray-100 focus:outline-none">Envoyer</button>
         </div>
     );
 }
@@ -497,4 +492,4 @@ function Channel() {
 //   }
 
 
- export default Channel;
+export default Channel;

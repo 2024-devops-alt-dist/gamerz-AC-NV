@@ -6,6 +6,8 @@ import authRoutes from './routes/authRoutes.ts';
 import userRoutes from './routes/usersRoutes.ts'; 
 import messagesRoutes from './routes/messagesRoutes.ts'; 
 import channelsRoutes from './routes/channelsRoutes.ts'; 
+import { Socket } from "socket.io";
+import socketController from "./controllers/socketsControllers.ts";
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
@@ -18,7 +20,7 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5006"],
+    origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5002"],
     credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
 })); 
 app.use((req, res, next) => {
@@ -29,26 +31,31 @@ app.use((req, res, next) => {
     next();
 });
 
-
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-      origin: ["http://localhost:5173","http://localhost:5006","http://localhost:5000"], // ou le port de ton frontend
+      origin: ["http://localhost:5173"],
       methods: ["GET", "POST"],
       credentials: true,
     },
   });
+  console.log("✅ Socket.IO server is running"),
+  
+  
+  // C’est ici que tu appelles ton controller
+ 
+  socketController(io);
 
 
-// Socket.IO
-io.on('connection', (socket) => {
-  console.log('✅ Utilisateur connecté via Socket.IO');
+// // Socket.IO
+// io.on('connection', (socket) => {
+//   console.log('✅ Utilisateur connecté via Socket.IO');
 
-  socket.on('message', (msg: string) => {
-    console.log('💬 Message reçu:', msg);
-    io.emit('message', msg); // Diffuse à tous
-  });
-});
+//   socket.on('message', (msg: string) => {
+//     console.log('💬 Message reçu:', msg);
+//     io.emit('message', msg); // Diffuse à tous
+//   });
+// });
 
 
 
@@ -65,6 +72,32 @@ app.use("/users", userRoutes);
 app.use("/messages", messagesRoutes);
 app.use("/channels", channelsRoutes);
 app.use("/auth", authRoutes);
+
+
+//SOCKET.IO
+// The 'io' instance is already declared above, so this block is redundant and removed.
+
+// Define the PORT variable
+
+// io.on("connection", (socket: Socket) => {
+//     console.log(`🔌 Client connecté: ${socket.id}`);
+
+//     socket.on("disconnect", () => {
+//         console.log(`❌ Client déconnecté: ${socket.id}`);
+//     });
+
+//     socket.on("join", (channelId: string) => {
+//         console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
+//         socket.join(channelId);
+//     });
+
+//     socket.on("message", (message: string) => {
+//         console.log(`💬 Message reçu: ${message}`);
+//         io.emit("message", message);
+//     });
+// });
+
+
 
 
 async function connectDB() {
