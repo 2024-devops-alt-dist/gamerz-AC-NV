@@ -20,7 +20,7 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5006"],
+    origin: ["http://localhost:5173", "http://localhost:5024"],
     credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
 })); 
 app.use((req, res, next) => {
@@ -50,14 +50,14 @@ app.use("/auth", authRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5000"],
+        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5024"],
         methods: ["GET", "POST"],
         credentials: true //  header à true => permet d'envoyer des cookies
     }
 });
 
-server.listen(5000, () => {
-    console.log("SOCKET IO:  Serveur démarré sur le port 5000");
+server.listen(5024, () => {
+    console.log("SOCKET IO:  Serveur démarré sur le port 5024");
 });
 
 io.on("connection", (socket: Socket) => {
@@ -72,10 +72,13 @@ io.on("connection", (socket: Socket) => {
         socket.join(channelId);
     });
 
-    socket.on("message", (message: string) => {
-        console.log(`💬 Message reçu: ${message}`);
-        // Emit the message to all connected clients
-        io.emit("message", message);
+    socket.on("message", (text) => {
+        console.log(`📝 Message reçu de ${socket.id} :`, text);
+        if (!text.trim()) return; // sécurité aussi ici
+        io.emit("message", {
+            text,
+            senderId: socket.id,
+        });
     });
 });
 
