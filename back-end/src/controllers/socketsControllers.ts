@@ -4,36 +4,35 @@ import Message from '../models/messageModel.js';
 
 
 const socketController = (io: Server) => {
+
+
     io.on("connection", (socket: Socket) => {
-        console.log(`🔌 Client connecté: ${socket.id}`);
+    console.log(`🔌 Client connecté: ${socket.id}`);
 
-        socket.on("join", (channelId: string) => {
-            console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
-            socket.join(channelId);
-        });
-        socket.on("disconnect", () => {
-            console.log(`❌ Client déconnecté: ${socket.id}`);
-        });
-
-        //envoie le message à tous les clients dans le canal
-        socket.on("message", async (messageData: { description: string; sender: string; channel: string }) => {
-            console.log(`💬 Message reçu: ${messageData.description}`);
-
-            // sauvegarde le message dans la base de données
-            const newMessage = new Message({
-                description: messageData.description,
-                sender: messageData.sender,
-                channel: messageData.channel,
-                createdAt: new Date(),
-            });
-
-            try {
-                const savedMessage = await newMessage.save();
-                io.to(messageData.channel).emit("message", savedMessage); // emit = envoyer le message à tous les clients dans le canal
-            } catch (error) {
-                console.error("Error saving message:", error);
-            }
-        });
+    socket.on("disconnect", () => {
+        console.log(`❌ Client déconnecté à socket io : ${socket.id}`);
     });
+
+    socket.on("message", (message: string) => {
+        console.log(`💬 Message reçu: ${message}`);
+        // Emit the message to all connected clients
+        io.emit("message", message);
+    });
+
+        // socket.on("join", (channelId: string) => {
+    //     console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
+    //     socket.join(channelId);
+    // });
+
+    // socket.on("sendMessage", async (message: string, channelId: string) => {
+    //     console.log(`💬 Message reçu dans le canal ${channelId}: ${message}`);
+    //     // Save the message to the database
+    //     const newMessage = new Message({ content: message, channelId });
+    //     await newMessage.save();
+    //     // Emit the message to all clients in the channel
+    //     io.to(channelId).emit("message", message);
+    // });
+
+});
 }
 export default socketController;

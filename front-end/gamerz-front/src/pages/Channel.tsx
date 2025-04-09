@@ -5,13 +5,14 @@ function Channel() {
     const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
+        localStorage.debug = 'socket.io-client:socket';
         socketRef.current = io("http://localhost:5000", {
             withCredentials: true,
-            transports: ["websocket"],
+            //transports: ["websocket"],
         });
 
         socketRef.current.on("connect", () => {
-            console.log("✅ Connecté à Socket.IO");
+            console.log("✅ Connecté à Socket.IO dans le front");
         });
 
         socketRef.current.on("message", (message: string) => {

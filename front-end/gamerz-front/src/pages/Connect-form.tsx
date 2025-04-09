@@ -1,33 +1,56 @@
 import { Link } from "react-router";
+import useAuth from "../context/useAuth.tsx";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 
 function Connexion() {
 	console.log("hello from Connexion");
+	const navigate = useNavigate();
+	const { login } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const formData = new FormData(e.target as HTMLFormElement);
-        const username = formData.get("username");
-        const password = formData.get("password");
+		const username = formData.get("username") as string | null;
+		const password = formData.get("password") as string | null;
+
+		if (!username || !password) {
+			alert("Veuillez remplir tous les champs.");
+			return;
+		}
 		console.log("Données envoyées :", { username, password });
 
-
-		const response = await fetch('http://localhost:5006/auth', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			credentials: 'include',
-			body: JSON.stringify({ username, password }),
-		});
-		
-        if (!response.ok) {
-            throw new Error("Connexion échouée");
-        }
-		console.log(response);
-	}
+		try {
+			const response = await fetch("http://localhost:5006/auth", {
+			  method: "POST",
+			  headers: {
+				"Content-Type": "application/json",
+			  },
+			  credentials: "include",
+			  body: JSON.stringify({ username, password }),
+			});
+	  
+			if (!response.ok) {
+			  throw new Error("Connexion échouée");
+			}
+			const success = await login(); // Appelle la fonction login dans le contexte
+			const result = await response.json();
+			console.log("Réponse serveur :", result);
+			if (success) {
+			  navigate("/"); // redirection à déterminer
+			} else {
+			  alert("co ok / id ok !");
+			}
+	  
+		  } catch (error) {
+			console.error("Erreur lors de la connexion :", error);
+			alert("Erreur de connexion");
+		  }
+		};
 
 
 	

@@ -5,6 +5,16 @@ import { sendAdminEmail } from '../utils/sendAdminEmail.js';
 console.log("allo allo bcrypt", bcrypt);
 //import mongoose from 'mongoose';
 
+
+
+declare global {
+  namespace Express {
+      interface Request {
+          userId?: string;
+      }
+  }
+}
+
 // Créer un user
 export const postUser = async (req: Request, res: Response) => {
     try {
@@ -43,6 +53,20 @@ export const getUser = async (req: Request, res: Response) => {
     try {
         const users = await User.find(filter);    
         res.status(200).json(users);   
+    } catch (error) {
+        res.status(500).json({ message: "Erreur serveur", error });
+    }
+};
+
+// get vers la route /me pour l'authentification
+export const getCurrentUser = async (req: Request, res: Response) => {
+    try {
+        const userId = req.userId; // Récupérer l'ID de l'utilisateur à partir du middleware d'authentification
+        const user = await User.findById(userId).select("-password"); // Exclure le mot de passe du résultat
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé" });
+        }
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error });
     }

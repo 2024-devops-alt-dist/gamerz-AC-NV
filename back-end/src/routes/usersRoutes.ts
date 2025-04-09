@@ -14,6 +14,7 @@ router.get("/", getUser);
 router.get("/:id", getOneUser);
 router.delete("/:id", deleteUser);
 router.put("/:id", updateUser);
+//router.get("/me", getCurrentUser); // get current user
 router.put("/approve/:id", approveUser);
 router.put("/refuse/:id", refuseUser);
 
