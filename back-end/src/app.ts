@@ -9,8 +9,9 @@ import channelsRoutes from './routes/channelsRoutes.ts';
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
-import { Server } from 'socket.io';
 import http from 'http';
+import { Server } from 'socket.io';
+
 dotenv.config();
 
 // Removed redundant declaration of io
@@ -29,14 +30,27 @@ app.use((req, res, next) => {
 });
 
 
-
 const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+      origin: ["http://localhost:5173","http://localhost:5006","http://localhost:5000"], // ou le port de ton frontend
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
 
-const io = new Server(server);
 
+// Socket.IO
 io.on('connection', (socket) => {
-    console.log('a user connected');
+  console.log('✅ Utilisateur connecté via Socket.IO');
+
+  socket.on('message', (msg: string) => {
+    console.log('💬 Message reçu:', msg);
+    io.emit('message', msg); // Diffuse à tous
+  });
 });
+
+
 
 
 
