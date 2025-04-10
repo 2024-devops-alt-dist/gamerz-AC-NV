@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   username?: string; // username optionnel
@@ -14,6 +14,7 @@ function Header({ username }: HeaderProps) {
         <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
           <a className="mr-5 hover:text-gray-900">À propos</a>
         </nav>
+        <p className="text-white mr-5">ton nom :{username}</p>
         {username ? (
           <span className="text-white mr-5">Bonjour, {username}!</span>
         ) : (

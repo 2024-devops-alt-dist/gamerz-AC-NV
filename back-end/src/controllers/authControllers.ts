@@ -42,6 +42,8 @@ export const authUser = async (req: Request, res: Response, next: NextFunction):
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000,
+            // sameSite: 'lax',
+            // secure: false, // true si HTTPS
         });
         console.log("🍪 Cookie envoyé", cookieParser);
 

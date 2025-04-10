@@ -31,6 +31,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(cookieParser()); // Middleware pour parser les cookies
 
 
 app.use((req, res, next) => {

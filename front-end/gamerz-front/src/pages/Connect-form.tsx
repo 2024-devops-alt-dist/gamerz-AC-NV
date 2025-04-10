@@ -27,6 +27,13 @@ function Connexion() {
             throw new Error("Connexion échouée");
         }
 		console.log(response);
+		if (response.ok) {
+			const data = await response.json();
+			alert(`Réponse du serveur : ${JSON.stringify(data)}`);
+			window.location.href = "/"; 
+		} else {
+			console.log("Erreur lors de la connexion");
+		}
 	}
 
 
