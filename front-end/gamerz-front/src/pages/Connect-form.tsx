@@ -1,7 +1,6 @@
 import { Link } from "react-router";
 
 
-
 function Connexion() {
 	console.log("hello from Connexion");
 
