@@ -63,7 +63,7 @@ function Channel() {
                         </div>
                         <div className="flex flex-col space-y-1 mt-4 mx-2 h-48 overflow-y-auto">
                             <button className="flex flex-row items-center hover:bg-white/30 rounded-xl p-2">
-                                <div className="ml-2 text-sm font-semibold">Nathan Vianey</div>
+                                <div className="ml-2 text-sm font-semibold">{socketId}</div>
                             </button>
                         </div>
                     </div>
@@ -75,31 +75,30 @@ function Channel() {
                         {/* Liste des messages */}
                         <div className="flex flex-col h-0 flex-grow overflow-y-auto mb-6"> {/* Augmenté mb-4 à mb-6 */}
                             <div className="flex flex-col gap-y-2">
-                                {messages.map((msg) => (
-                                    <div
-                                        key={msg.id}
-                                        className={`col-start-${
-                                            msg.fromSelf ? "6" : "1"
-                                        } col-end-${msg.fromSelf ? "13" : "8"} p-3 rounded-lg`}
-                                    >
-                                        <div className={`flex items-center ${msg.fromSelf ? "justify-end" : ""}`}>
-                                            {!msg.fromSelf && (
-                                                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-[#1EDCB3] text-white flex-shrink-0">
-                                                    A
-                                                </div>
-                                            )}
-                                            <div
-                                                className={`relative ${
-                                                    msg.fromSelf
-                                                        ? "mr-3 bg-[#1EDCB3] text-white"
-                                                        : "ml-3 bg-white/30 border-solid border-[#1EDCB3]"
-                                                } text-sm py-2 px-4 shadow rounded-xl`}
-                                            >
-                                                <div>{msg.text}</div>
-                                            </div>
+                            {messages.map((msg) => (
+                                <div
+                                    key={msg.id}
+                                    className={`col-start-${
+                                        msg.fromSelf ? "6" : "1"
+                                    } col-end-${msg.fromSelf ? "13" : "8"} p-3 rounded-lg`}
+                                >
+                                    <div className={`flex flex-col ${msg.fromSelf ? "items-end" : "items-start"}`}>
+                                        {/* Affichage du socketId au-dessus du message */}
+                                        {!msg.fromSelf && (
+                                            <div className="text-xs text-gray-400 ml-3 mb-1">@{socketId}</div>
+                                        )}
+                                        <div
+                                            className={`relative ${
+                                                msg.fromSelf
+                                                    ? "mr-3 bg-[#1EDCB3] text-white"
+                                                    : "ml-3 bg-white/30 border-solid border-[#1EDCB3]"
+                                            } text-sm py-2 px-4 shadow rounded-xl`}
+                                        >
+                                            <div>{msg.text}</div>
                                         </div>
                                     </div>
-                                ))}
+                                </div>
+                            ))}
                             </div>
                         </div>
 
