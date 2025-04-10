@@ -8,7 +8,7 @@ import Inscription from "./pages/Inscription.tsx";
 import ChannelsList from "./pages/ChannelsList.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Channel from "./pages/Channel.tsx";
-import { useEffect, useState } from "react";
+//import { useEffect, useState } from "react";
 //import Auth from "./Auth.tsx";
 
 
@@ -18,36 +18,37 @@ import { useEffect, useState } from "react";
 
 
 function App() {
-  interface User {
-    username: string;
-    // Add other properties if needed
-  }
+  // interface User {
+  //   username: string;
+  //   // Add other properties if needed
+  // }
 
-  const [user, setUser] = useState<User | null>(null);  
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch('http://localhost:5006/me', {
-          credentials: 'include',
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-          console.log('user dans app.tsx:', data);
-        }
-      } catch (err) {
-        console.error('Utilisateur non authentifié:', err);
-      }
-    };
+  // const [user, setUser] = useState<User | null>(null);  
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       const res = await fetch('http://localhost:5006/me', {
+  //         credentials: 'include',
+  //       });
+  //       if (res.ok) {
+  //         const data = await res.json();
+  //         setUser(data);
+  //         console.log('user dans app.tsx:', data);
+  //       }
+  //     } catch (err) {
+  //       console.error('Utilisateur non authentifié:', err);
+  //     }
+  //   };
 
-    checkAuth();
-  }, []);
+  //   checkAuth();
+  // }, []);
 
+  // console.log('user dans app.tsx:', user);  
 
   return (
   <>
 
-  <Header username={user?.username} />
+  <Header />
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/channelslist" element={<ChannelsList />} />
