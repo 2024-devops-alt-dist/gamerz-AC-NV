@@ -11,7 +11,7 @@ function Connexion() {
 		const formData = new FormData(e.target as HTMLFormElement);
         const username = formData.get("username");
         const password = formData.get("password");
-		console.log("Données envoyées :", { username, password });
+		console.log("Données envoyées dans le form :", { username, password });
 
 
 		const response = await fetch('http://localhost:5006/auth', {
@@ -29,8 +29,8 @@ function Connexion() {
 		console.log(response);
 		if (response.ok) {
 			const data = await response.json();
-			alert(`Réponse du serveur : ${JSON.stringify(data)}`);
-			window.location.href = "/"; 
+			alert(`Réponse du serveur : ${JSON.stringify(data)}, ${username} vous êtes connecté !`);
+			window.location.href = "/me"; 
 		} else {
 			console.log("Erreur lors de la connexion");
 		}
