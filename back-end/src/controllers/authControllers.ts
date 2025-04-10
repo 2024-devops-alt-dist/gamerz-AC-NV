@@ -48,7 +48,14 @@ export const authUser = async (req: Request, res: Response, next: NextFunction):
         console.log("🍪 Cookie envoyé", cookieParser);
 
 
-        res.status(200).json({ message: 'Authentification réussie' });
+       // res.status(200).json({ message: 'Authentification réussie' });
+       res.status(200).json({
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        motivation: user.motivation,
+        status: user.status,
+      });
 
     } catch (error) {
         console.error('Erreur authUser :', error);
