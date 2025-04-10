@@ -1,9 +1,22 @@
+
+
+
 import { Request, Response, NextFunction, response } from 'express';
 import User from '../models/userModel.js';
 import bcrypt from 'bcryptjs';
 import { sendAdminEmail } from '../utils/sendAdminEmail.js';
+import jwt from 'jsonwebtoken';
+
 console.log("allo allo bcrypt", bcrypt);
 //import mongoose from 'mongoose';
+
+declare global {
+    namespace Express {
+        interface Request {
+            userId?: string;
+        }
+    }
+}
 
 // Créer un user
 export const postUser = async (req: Request, res: Response) => {
@@ -47,6 +60,38 @@ export const getUser = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Erreur serveur", error });
     }
 };
+
+export const getCurrentUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+    const token = req.cookies.token;
+    console.log("🧁 Token reçu :", token);
+
+    if (!token) {
+      res.status(401).json({ message: "Token manquant" });
+      return;
+    }
+
+    const secret = process.env.JWT_SECRET_KEY as string;
+    console.log("🔐 Clé secrète utilisée :", secret);
+
+    const decoded = jwt.verify(token, secret) as { userId: string };
+    console.log("📦 Données du token décodé :", decoded);
+
+    const user = await User.findById(decoded.userId).select("-password");
+    console.log("👤 Utilisateur trouvé :", user);
+
+    if (!user) {
+      res.status(404).json({ message: "Utilisateur non trouvé" });
+      return;
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("💥 Erreur dans getCurrentUser :", error);
+    res.status(500).json({ message: "Erreur serveur get currentuser", error });
+  }
+};
+
 
 // get one user
 export const getOneUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -108,6 +153,19 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
         next(error);
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
