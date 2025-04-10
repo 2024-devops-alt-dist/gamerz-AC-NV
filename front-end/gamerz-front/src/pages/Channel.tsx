@@ -12,6 +12,7 @@ function Channel() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [socketId, setSocketId] = useState<string | null>(null);
+    console.log("socketId", socketId);
 
     useEffect(() => {
         socketRef.current = io("http://localhost:5024", {

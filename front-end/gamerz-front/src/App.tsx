@@ -1,14 +1,15 @@
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footers";
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage.tsx";
 import Connexion from "./pages/Connect-form.tsx";
 import Inscription from "./pages/Inscription.tsx";
 import ChannelsList from "./pages/ChannelsList.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Channel from "./pages/Channel.tsx";
-
+import { useEffect, useState } from "react";
+//import Auth from "./Auth.tsx";
 
 
 
@@ -17,10 +18,36 @@ import Channel from "./pages/Channel.tsx";
 
 
 function App() {
+  interface User {
+    username: string;
+    // Add other properties if needed
+  }
+
+  const [user, setUser] = useState<User | null>(null);  
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('http://localhost:5006/me', {
+          credentials: 'include',
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+          console.log('user dans app.tsx:', data);
+        }
+      } catch (err) {
+        console.error('Utilisateur non authentifié:', err);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+
   return (
   <>
 
-    <Header/>
+  <Header username={user?.username} />
     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/channelslist" element={<ChannelsList />} />
