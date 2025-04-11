@@ -8,6 +8,10 @@ interface Message {
 }
 
 function Channel() {
+
+//fetch pour recp des messages
+
+
     const socketRef = useRef<Socket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState("");

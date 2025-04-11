@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Hero({}: {}) {
+function Hero() {
     return (
         <>
         <section className="text-gray-600 body-font bg-cover bg-center bg-no-repeat bg-[url('./assets/landing.png')]">
