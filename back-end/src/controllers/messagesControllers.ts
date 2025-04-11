@@ -23,7 +23,7 @@ export const postMessage = async (req: Request, res: Response) => {
 // get messages
 export const getMessages = async (req: Request, res: Response) => {
     try {
-        const message = await Message.find();
+        const message = await Message.find().populate("sender").populate("channel"); // populate pour les champs sender et channel
         res.status(200).json(message);
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error });
@@ -41,7 +41,7 @@ export const updateMessage = async (req: Request, res: Response, next: NextFunct
             return;
         }
 
-        const updatedMessage = await Message.findByIdAndUpdate(id, req.body, { new: true });
+        const updatedMessage = await Message.findByIdAndUpdate(id, req.body, { new: true }).populate("sender").populate("channel"); // populate pour les champs sender et channel
 
         if (!updatedMessage) {
             res.status(404).json({ message: "Message non trouvé" });
@@ -83,7 +83,7 @@ export const getChannelMessages = async (req: Request, res: Response, next: Next
     console.log("avant try", req.params);
     try {
         const { channelId } = req.params;
-        const message = await Message.find({ channel: channelId});
+        const message = await Message.find({ channel: channelId}).populate("sender").populate("channel"); // populate pour les champs sender et channel
         console.log("object message", message);
 
         if (!message) {
@@ -102,7 +102,7 @@ export const deleteMessage = async (req: Request, res: Response, next: NextFunct
     console.log("avant try", req.params);
     try {
         const { id } = req.params;
-        const message = await Message.findByIdAndDelete(id);
+        const message = await Message.findByIdAndDelete(id).populate("sender").populate("channel"); // populate pour les champs sender et channel
         console.log("object user", message);
 
         if (!message) {
