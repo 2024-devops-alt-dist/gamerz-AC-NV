@@ -6,6 +6,7 @@ interface Message {
     id: number;
     text: string;
     fromSelf: boolean;
+    createdAt: string
 }
 
 interface Channel {
@@ -180,17 +181,21 @@ console.log("id", id);
                                     <div className={`flex flex-col ${msg.fromSelf ? "items-end" : "items-start"}`}>
                                         {/* Affichage du socketId au-dessus du message */}
                                         {!msg.fromSelf && (
-                                            <div className="text-xs text-gray-400 ml-3 mb-1">@{msg.sender} at {msg.sender}</div>
+                                            <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.sender} </div>
                                         )}
                                         <div
                                             className={`relative ${
                                                 msg.fromSelf
                                                     ? "mr-3 bg-[#1EDCB3] text-white"
-                                                    : "ml-3 bg-white/30 border-solid border-[#1EDCB3]"
+                                                    : "ml-3 bg-white/10 border-1 border-solid border-[#1EDCB3] rounded-l-b-0"
                                             } text-sm py-2 px-4 shadow rounded-xl`}
                                         >
-                                            <div>{msg.description}</div>
+                                            <div>{msg.description}
+                                            
+                                            </div>
+                                            
                                         </div>
+                                        <span className="text-xs text-gray-500 ml-3 mb-1">{msg.createdAt}</span>
                                     </div>
                                 </div>
                             ))}
