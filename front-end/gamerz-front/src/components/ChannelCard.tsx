@@ -19,7 +19,7 @@ function ChannelCard({channelName, connectedUsers, url }: { channelName: string;
                             </div>
                             <div className='flex items-left justify-left mt-1 gap-1'>
                                 <div className='mt-1 text-sm text-gray-900 bg-[#1EDCB3] rounded-full px-6 py-1'>
-                                <Link to={url}>  Rejoindre</Link>
+                                
                                 </div>
                                 
                             </div>
