@@ -1,8 +1,12 @@
-import { Link } from "react-router";
-
+import { Link } from "react-router-dom";
+import { useAuth } from "../store/AuthContext.tsx";
+import { useNavigate } from "react-router-dom";
 
 function Connexion() {
 	console.log("hello from Connexion");
+	const { setUser } = useAuth();
+	console.log("setUser dans Connexion:", setUser);
+	const navigate = useNavigate(); 
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -28,8 +32,25 @@ function Connexion() {
 		console.log(response);
 		if (response.ok) {
 			const data = await response.json();
+			console.log("data:", data);
+			if (data.username) {
+				setUser({
+					username: data.username,
+					id: data.id || "",
+					email: data.email || "",
+					motivation: data.motivation || "",
+					status: data.status || "",
+					isAuthenticated: true
+				});
+			 }else{
+				console.log("données utilisateur manquantes");
+				alert("données utilisateur manquantes");
+			 } 
+
 			alert(`Réponse du serveur : ${JSON.stringify(data)}, ${username} vous êtes connecté !`);
-			window.location.href = "/me"; 
+		
+			console.log("Données de l'utilisateur connectform :", data.username);
+			navigate("/channelslist");
 		} else {
 			console.log("Erreur lors de la connexion");
 		}
