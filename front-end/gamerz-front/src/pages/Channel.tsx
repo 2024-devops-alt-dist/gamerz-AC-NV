@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { useParams } from "react-router-dom";
 
 interface Message {
     id: number;
@@ -7,9 +8,45 @@ interface Message {
     fromSelf: boolean;
 }
 
-function Channel() {
+interface Channel {
+    _id: string;
+    channelName: string;
+    connectedUsers: number;
+   
+}
 
-//fetch pour recp des messages
+
+function Channel() {
+ 
+const { id } = useParams<{ id: string }>();
+console.log("id", id);
+    const [channel, setChannel] = useState<Channel | null>(null);
+    console.log("channel", channel);
+    console.log("id", id);
+
+    const fetchChannel = async () => {
+        try {
+            const response = await fetch(`http://localhost:5006/channels/${id}`);
+            console.log("J'essaye", id);
+
+        
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération du channel");
+            }
+            const data = await response.json();
+            console.log("data", data);
+            setChannel(data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchChannel();
+    }, [id]);
+
+
+
 
 
     const socketRef = useRef<Socket | null>(null);
@@ -48,6 +85,12 @@ function Channel() {
         // ❌ On n'ajoute plus le message ici
     };
 
+    if (!channel) {
+        return <div>Loading...</div>;
+    }
+
+
+
     return (
         <div className="flex h-screen antialiased text-white">
             <div className="flex flex-row h-screen w-full overflow-x-hidden">
@@ -58,13 +101,13 @@ function Channel() {
                     </span>
                     <div className="flex flex-row items-center justify-center h-12 w-full">
                         <div className="ml-2 font-bold text-4xl">
-                            <h1>Nom du Salon</h1>
+                            <h1>{channel.channelName}</h1>
                         </div>
                     </div>
                     <div className="flex flex-col mt-8">
                         <div className="flex flex-row items-center justify-between text-xs">
-                            <span className="font-bold">Utilisateurs connectés</span>
-                            <span className="flex items-center justify-center bg-black text-[#1EDCB3] h-4 w-4 rounded-full">4</span>
+                            <span className="font-bold">Joueurs connectés</span>
+                            <span className="flex items-center justify-center bg-black text-[#1EDCB3] h-4 w-4 rounded-full">{channel.connectedUsers}</span>
                         </div>
                         <div className="flex flex-col space-y-1 mt-4 mx-2 h-48 overflow-y-auto">
                             <button className="flex flex-row items-center hover:bg-white/30 rounded-xl p-2">
