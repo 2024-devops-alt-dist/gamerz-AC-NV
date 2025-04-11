@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { useParams } from "react-router-dom";
 
 interface Message {
     id: number;
@@ -9,7 +10,28 @@ interface Message {
 
 function Channel() {
 
-//fetch pour recp des messages
+
+    const { id } = useParams<{ id: string }>();
+    console.log("id", id);
+
+//fetch pour recp des infos du channel
+useEffect(() => {
+    const fetchChannelInfo = async () => {
+        try {
+            const response = await fetch(`http://localhost:5006/channels/${id}`, {
+                credentials: "include",
+            });
+            if (!response.ok) throw new Error("Erreur lors de la récupération des informations du salon");
+            const data = await response.json();
+            console.log("Channel data:", data);
+        } catch (error) {
+            console.error("Erreur de récupération des informations du salon :", error);
+        }
+    }
+    fetchChannelInfo();
+}
+, [id]);
+
 
 
     const socketRef = useRef<Socket | null>(null);

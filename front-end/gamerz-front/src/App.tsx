@@ -55,7 +55,7 @@ function App() {
         <Route path="/login" element={<Connexion />} />
         <Route path="/inscription" element={<Inscription />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/channel" element={<Channel />} />
+        <Route path="/channel/:id" element={<Channel />} />
 
       </Routes>
     <Footer title="Gamerz"/>
