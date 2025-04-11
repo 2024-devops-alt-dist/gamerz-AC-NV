@@ -68,7 +68,7 @@ console.log("id", id);
             const formattedMessages: Message[] = data.map((msg: any) => ({
                 id: msg._id,
                 description: msg.description,
-                sender: typeof msg.sender === "string" ? msg.sender : msg.sender._id,
+                sender: msg.sender ? msg.sender._id : "",
                 senderName: typeof msg.sender === "object" ? msg.sender.username : null,
                 fromSelf: (typeof msg.sender === "string" ? msg.sender : msg.sender._id) === socketRef.current?.id,
               }));
