@@ -15,7 +15,7 @@ const AuthContext = createContext<{ user: User | null; setUser: React.Dispatch<R
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  console.log("STP REPONDS MOI 😭")
+ // console.log("STP REPONDS MOI 😭")
 
   //     try {
   //       const res = await fetch('http://localhost:5006/me', {

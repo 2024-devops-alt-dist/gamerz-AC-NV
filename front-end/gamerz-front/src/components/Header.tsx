@@ -13,7 +13,6 @@ const authContext = useContext(AuthContext);
 
 const user = authContext.user;
 const username = user ? user.username : null;
-console.log("user dans header", username) // recup le username ou null si non connecté
 
     return (
       <header className="text-gray-600 body-font bg-black">

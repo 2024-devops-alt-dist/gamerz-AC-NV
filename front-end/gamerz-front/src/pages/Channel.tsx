@@ -25,13 +25,12 @@ function Channel() {
 const { id } = useParams<{ id: string }>();
 console.log("id", id);
     const [channel, setChannel] = useState<Channel | null>(null);
-    console.log("channel", channel);
-    console.log("id", id);
+//    console.log("id", id);
 
     const fetchChannel = async () => {
         try {
             const response = await fetch(`http://localhost:5006/channels/${id}`);
-            console.log("J'essaye", id);
+            //console.log("J'essaye", id);
 
         
             if (!response.ok) {
@@ -53,7 +52,7 @@ console.log("id", id);
 
 
 
-    const [message, setMessage] = useState<Message | null>(null);
+    //const [message, setMessage] = useState<Message | null>(null);
     const fetchMessages = async () => {
         try {
             const response = await fetch(`http://localhost:5006/messages/channel/${id}`);
@@ -65,7 +64,7 @@ console.log("id", id);
     
             const data = await response.json();
     
-            const formattedMessages: Message[] = data.map((msg: any) => {
+            const formattedMessages: Message[] = data.map((msg: { _id: string; description: string; sender: { _id: string; username: string } | string; createdAt: string }) => {
                 const senderObj = msg.sender;
                 const senderId = typeof senderObj === "object" && senderObj !== null ? senderObj._id : senderObj;
                 const senderName = typeof senderObj === "object" && senderObj !== null ? senderObj.username : null;
@@ -95,12 +94,6 @@ console.log("id", id);
             fetchMessages();
         }
     }, [id]);
-
-    console.log("message", message);
-
-
-
-
 
 
     const socketRef = useRef<Socket | null>(null);
@@ -134,9 +127,14 @@ console.log("id", id);
 
     const send = () => {
         if (inputValue.trim() === "") return;
-        socketRef.current?.emit("message", inputValue, "senderId");
+        const messageData = {
+            description: inputValue, 
+            sender: socketId,       
+            channel: id,              
+        };
+    
+        socketRef.current?.emit("message", messageData); 
         setInputValue("");
-        // ❌ On n'ajoute plus le message ici
     };
 
     if (!channel) {
