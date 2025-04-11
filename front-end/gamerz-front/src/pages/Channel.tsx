@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 interface Message {
     id: number;
     text: string;
     fromSelf: boolean;
+    createdAt: string
 }
 
 interface Channel {
@@ -60,8 +61,17 @@ console.log("id", id);
             }
     
             const data = await response.json();
-            console.log("💬 Messages récupérés :", data);
-            setMessages(data); // ou adapte si tu veux les mapper
+            const formattedMessages = data.map((msg: any) => ({
+                id: msg._id,
+                description: msg.description,
+                sender: msg.sender,
+                fromSelf: msg.sender === socketRef.current?.id,
+              }));
+
+
+
+            console.log("💬 Messages récupérés au bon format :", formattedMessages);
+            setMessages(formattedMessages); // ou adapte si tu veux les mapper
         } catch (error) {
             console.error("❌ Erreur fetchMessages :", error);
         }
@@ -130,7 +140,7 @@ console.log("id", id);
                 {/* Sidebar - tu peux le laisser tel quel */}
                 <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-black flex-shrink-0">
                     <span className="text-xs font-bold text-gray-500 uppercase mb-4">
-                        <a href=""> ← retours aux salons</a>
+                    <Link to="/channelslist"> ← retours aux salons</Link>
                     </span>
                     <div className="flex flex-row items-center justify-center h-12 w-full">
                         <div className="ml-2 font-bold text-4xl">
@@ -171,17 +181,21 @@ console.log("id", id);
                                     <div className={`flex flex-col ${msg.fromSelf ? "items-end" : "items-start"}`}>
                                         {/* Affichage du socketId au-dessus du message */}
                                         {!msg.fromSelf && (
-                                            <div className="text-xs text-gray-400 ml-3 mb-1">@{socketId}</div>
+                                            <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.sender} </div>
                                         )}
                                         <div
                                             className={`relative ${
                                                 msg.fromSelf
                                                     ? "mr-3 bg-[#1EDCB3] text-white"
-                                                    : "ml-3 bg-white/30 border-solid border-[#1EDCB3]"
+                                                    : "ml-3 bg-white/10 border-1 border-solid border-[#1EDCB3] rounded-l-b-0"
                                             } text-sm py-2 px-4 shadow rounded-xl`}
                                         >
-                                            <div>{msg.text}</div>
+                                            <div>{msg.description}
+                                            
+                                            </div>
+                                            
                                         </div>
+                                        <span className="text-xs text-gray-500 ml-3 mb-1">{msg.createdAt}</span>
                                     </div>
                                 </div>
                             ))}
