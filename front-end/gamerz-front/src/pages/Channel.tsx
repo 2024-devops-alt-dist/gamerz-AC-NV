@@ -3,16 +3,19 @@ import { io, Socket } from "socket.io-client";
 import { useParams, Link } from "react-router-dom";
 
 interface Message {
-    id: number;
-    text: string;
+    id: string;
+    description: string;
     fromSelf: boolean;
     createdAt: string
+    sender: string;
+    senderName?: string | null;
 }
 
 interface Channel {
     _id: string;
     channelName: string;
     connectedUsers: number;
+    
    
 }
 
@@ -61,11 +64,12 @@ console.log("id", id);
             }
     
             const data = await response.json();
-            const formattedMessages = data.map((msg: any) => ({
+            const formattedMessages: Message[] = data.map((msg: any) => ({
                 id: msg._id,
                 description: msg.description,
-                sender: msg.sender,
-                fromSelf: msg.sender === socketRef.current?.id,
+                sender: typeof msg.sender === "string" ? msg.sender : msg.sender._id,
+                senderName: typeof msg.sender === "object" ? msg.sender.username : null,
+                fromSelf: (typeof msg.sender === "string" ? msg.sender : msg.sender._id) === socketRef.current?.id,
               }));
 
 
@@ -113,7 +117,7 @@ console.log("id", id);
             console.log("📥 Reçu du serveur :", data);
             if (!data.text.trim()) return;
             const fromSelf = data.senderId === socketRef.current?.id;
-            setMessages(prev => [...prev, { id: Date.now(), text: data.text, fromSelf }]);
+            setMessages(prev => [...prev, { id: Date.now().toString(), description: data.text, fromSelf, createdAt: new Date().toISOString(), sender: data.senderId, senderName: null }]);
         });
 
         return () => {
@@ -181,7 +185,7 @@ console.log("id", id);
                                     <div className={`flex flex-col ${msg.fromSelf ? "items-end" : "items-start"}`}>
                                         {/* Affichage du socketId au-dessus du message */}
                                         {!msg.fromSelf && (
-                                            <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.sender} </div>
+                                            <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.senderName} </div>
                                         )}
                                         <div
                                             className={`relative ${
