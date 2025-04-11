@@ -11,7 +11,7 @@ const router = Router();
 router.post("/", postMessage);
 router.get("/", getMessages);
 router.get("/:id", getOneMessage);
-router.get("/:channel", getChannelMessages);
+router.get("/channel/:channelId", getChannelMessages);
 router.delete("/:id", deleteMessage);
 router.put("/:id", updateMessage);
 export default router;

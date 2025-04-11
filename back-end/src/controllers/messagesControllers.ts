@@ -82,8 +82,8 @@ export const getOneMessage = async (req: Request, res: Response, next: NextFunct
 export const getChannelMessages = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     console.log("avant try", req.params);
     try {
-        const { channel } = req.params;
-        const message = await Message.find({ channel: channel});
+        const { channelId } = req.params;
+        const message = await Message.find({ channel: channelId});
         console.log("object message", message);
 
         if (!message) {

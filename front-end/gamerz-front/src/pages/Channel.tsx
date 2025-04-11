@@ -49,6 +49,39 @@ console.log("id", id);
 
 
 
+    const [message, setMessage] = useState<Message | null>(null);
+    const fetchMessages = async () => {
+        try {
+            const response = await fetch(`http://localhost:5006/messages/channel/${id}`); // id = channel ID
+            console.log("📨 Récupération des messages du salon :", id);
+    
+            if (!response.ok) {
+                throw new Error("Erreur lors de la récupération des messages");
+            }
+    
+            const data = await response.json();
+            console.log("💬 Messages récupérés :", data);
+            setMessages(data); // ou adapte si tu veux les mapper
+        } catch (error) {
+            console.error("❌ Erreur fetchMessages :", error);
+        }
+    };
+    
+
+
+    useEffect(() => {
+        if (id) {
+            fetchMessages();
+        }
+    }, [id]);
+
+    console.log("message", message);
+
+
+
+
+
+
     const socketRef = useRef<Socket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState("");
@@ -123,6 +156,11 @@ console.log("id", id);
                         {/* Liste des messages */}
                         <div className="flex flex-col h-0 flex-grow overflow-y-auto mb-6"> {/* Augmenté mb-4 à mb-6 */}
                             <div className="flex flex-col gap-y-2">
+
+
+
+
+                                { /* Affichage des messages mongodb*/}
                             {messages.map((msg) => (
                                 <div
                                     key={msg.id}
@@ -147,6 +185,9 @@ console.log("id", id);
                                     </div>
                                 </div>
                             ))}
+
+
+
                             </div>
                         </div>
 
