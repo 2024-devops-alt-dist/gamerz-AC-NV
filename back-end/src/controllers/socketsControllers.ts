@@ -16,24 +16,34 @@ const socketController = (io: Server) => {
         });
 
         //envoie le message à tous les clients dans le canal
-        socket.on("message", async (messageData: { description: string; sender: string; channel: string }) => {
-            console.log(`💬 Message reçu: ${messageData.description}`);
-
-            // sauvegarde le message dans la base de données
+        socket.on("message", async (messageData) => {
+            if (!messageData.description || !messageData.sender || !messageData.channel) {
+                console.error("Erreur: Données manquantes dans le message:", messageData);
+                return;
+            }
+            
+            // Sauvegarder le message dans la base de données
             const newMessage = new Message({
                 description: messageData.description,
                 sender: messageData.sender,
                 channel: messageData.channel,
                 createdAt: new Date(),
             });
-
+        
             try {
                 const savedMessage = await newMessage.save();
-                io.to(messageData.channel).emit("message", savedMessage); // emit = envoyer le message à tous les clients dans le canal
+                io.to(messageData.channel).emit("message", {
+                    id: savedMessage._id,
+                    description: savedMessage.description,
+                    sender: savedMessage.sender,
+                    createdAt: savedMessage.createdAt,
+                    channel: savedMessage.channel,
+                });
             } catch (error) {
-                console.error("Error saving message:", error);
+                console.error("Erreur lors de la sauvegarde du message:", error);
             }
         });
+        
     });
 }
 export default socketController;

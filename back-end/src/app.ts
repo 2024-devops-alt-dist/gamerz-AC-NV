@@ -9,6 +9,8 @@ import channelsRoutes from './routes/channelsRoutes.ts';
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
+import Message from './models/messageModel.js';
+
 //import socketController from "./controllers/socketsControllers.ts";
 
 //import {router as userRoutes} from './routes/usersRoutes.js';
@@ -73,13 +75,33 @@ io.on("connection", (socket: Socket) => {
         socket.join(channelId);
     });
 
-    socket.on("message", (text) => {
+    socket.on("message", async (text) => {
         console.log(`📝 Message reçu de ${socket.id} :`, text);
-        if (!text.trim()) return; // sécurité aussi ici
-        io.emit("message", {
-            text,
-            senderId: socket.id,
+        if (!text.description || !text.sender || !text.channel){
+            console.error("Erreur: Données manquantes dans le message:", text);
+            console.log("il manque ceci : ", text.description, text.sender, text.channel);
+            return;
+        } ; // sécurité aussi ici
+        const newMessage = new Message({
+            description: text.description,
+            sender: text.sender,
+            channel: text.channel,
+            createdAt: new Date(),
+
         });
+        // Sauvegarder le message dans la base de données
+        try {
+            const savedMessage = await newMessage.save();
+            io.to(text.channel).emit("message", {
+                id: savedMessage._id,
+                description: savedMessage.description,
+                sender: savedMessage.sender,
+                createdAt: savedMessage.createdAt,
+                channel: savedMessage.channel,
+            });
+        } catch (error) {
+            console.error("Erreur lors de la sauvegarde du message:", error);
+        }
     });
 });
 
