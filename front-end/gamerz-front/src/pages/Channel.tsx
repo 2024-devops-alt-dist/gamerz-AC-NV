@@ -56,7 +56,7 @@ console.log("id", id);
     const [message, setMessage] = useState<Message | null>(null);
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://localhost:5006/messages/channel/${id}`); // id = channel ID
+            const response = await fetch(`http://localhost:5006/messages/channel/${id}`);
             console.log("📨 Récupération des messages du salon :", id);
     
             if (!response.ok) {
@@ -64,22 +64,29 @@ console.log("id", id);
             }
     
             const data = await response.json();
-            const formattedMessages: Message[] = data.map((msg: any) => ({
-                id: msg._id,
-                description: msg.description,
-                sender: typeof msg.sender === "string" ? msg.sender : msg.sender._id,
-                senderName: typeof msg.sender === "object" ? msg.sender.username : null,
-                fromSelf: (typeof msg.sender === "string" ? msg.sender : msg.sender._id) === socketRef.current?.id,
-              }));
-
-
-
-            console.log("💬 Messages récupérés au bon format :", formattedMessages);
-            setMessages(formattedMessages); // ou adapte si tu veux les mapper
+    
+            const formattedMessages: Message[] = data.map((msg: any) => {
+                const senderObj = msg.sender;
+                const senderId = typeof senderObj === "object" && senderObj !== null ? senderObj._id : senderObj;
+                const senderName = typeof senderObj === "object" && senderObj !== null ? senderObj.username : null;
+    
+                return {
+                    id: msg._id,
+                    description: msg.description,
+                    sender: senderId ?? "inconnu",
+                    senderName: senderName,
+                    fromSelf: senderId === socketRef.current?.id,
+                    createdAt: msg.createdAt,
+                };
+            });
+    
+            console.log("💬 Messages formatés :", formattedMessages);
+            setMessages(formattedMessages);
         } catch (error) {
             console.error("❌ Erreur fetchMessages :", error);
         }
     };
+    
     
 
 
@@ -127,7 +134,7 @@ console.log("id", id);
 
     const send = () => {
         if (inputValue.trim() === "") return;
-        socketRef.current?.emit("message", inputValue);
+        socketRef.current?.emit("message", inputValue, "senderId");
         setInputValue("");
         // ❌ On n'ajoute plus le message ici
     };
@@ -137,7 +144,8 @@ console.log("id", id);
     }
 
 
-
+    console.log("channel en dehors de la fonction", channel);
+    console.log("messages en dehors de la fonction", messages)
     return (
         <div className="flex h-screen antialiased text-white">
             <div className="flex flex-row h-screen w-full overflow-x-hidden">
@@ -185,7 +193,7 @@ console.log("id", id);
                                     <div className={`flex flex-col ${msg.fromSelf ? "items-end" : "items-start"}`}>
                                         {/* Affichage du socketId au-dessus du message */}
                                         {!msg.fromSelf && (
-                                            <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.senderName} </div>
+                                            <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.senderName ?? msg.sender} </div>
                                         )}
                                         <div
                                             className={`relative ${
@@ -199,7 +207,7 @@ console.log("id", id);
                                             </div>
                                             
                                         </div>
-                                        <span className="text-xs text-gray-500 ml-3 mb-1">{msg.createdAt}</span>
+                                        <span className="text-xs mt-1 block text-gray-500 ml-3 mb-1">{msg.createdAt}</span>
                                     </div>
                                 </div>
                             ))}
