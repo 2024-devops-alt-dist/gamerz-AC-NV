@@ -70,7 +70,7 @@ export const getCurrentUser = async (req: Request, res: Response): Promise<void>
       res.status(401).json({ message: "Token manquant" });
       return;
     }
-
+    
     const secret = process.env.JWT_SECRET_KEY as string;
     console.log("🔐 Clé secrète utilisée :", secret);
 

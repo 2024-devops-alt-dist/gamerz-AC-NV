@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../store/AuthContext.tsx";
 import { useNavigate } from "react-router-dom";
 
-
 function Connexion() {
 	console.log("hello from Connexion");
 	const { setUser } = useAuth();
