@@ -23,7 +23,7 @@ export const postMessage = async (req: Request, res: Response) => {
 // get messages
 export const getMessages = async (req: Request, res: Response) => {
     try {
-        const message = await Message.find();
+        const message = await Message.find().populate("sender", "username");
         res.status(200).json(message);
     } catch (error) {
         res.status(500).json({ message: "Erreur serveur", error });
@@ -63,7 +63,7 @@ export const getOneMessage = async (req: Request, res: Response, next: NextFunct
     console.log("avant try", req.params);
     try {
         const { id } = req.params;
-        const message = await Message.findById(id);
+        const message = await Message.findById(id).populate("sender", "username");
         console.log("object message", message);
 
         if (!message) {
@@ -83,8 +83,8 @@ export const getChannelMessages = async (req: Request, res: Response, next: Next
     console.log("avant try", req.params);
     try {
         const { channelId } = req.params;
-        const message = await Message.find({ channel: channelId});
-        console.log("object message", message);
+        const message = await Message.find({ channel: channelId}).populate("sender", "username").sort({ createdAt: -1 });
+        console.log("get channel messages", message);
 
         if (!message) {
             res.status(404).json({ message: "Messages not found" });
