@@ -48,10 +48,6 @@ console.log("id", id);
         fetchChannel();
     }, [id]);
 
-
-
-
-
     //const [message, setMessage] = useState<Message | null>(null);
     const fetchMessages = async () => {
         try {
@@ -63,8 +59,11 @@ console.log("id", id);
             }
     
             const data = await response.json();
-    
-            const formattedMessages: Message[] = data.map((msg: { _id: string; description: string; sender: { _id: string; username: string } | string; createdAt: string }) => {
+
+            // MODIF DE VENDREDI essayer de récupérer le message avec les bons types
+            //const formattedMessages: Message[] = data.map((msg: any) => {
+            const formattedMessages: Message[] = data.map((msg: { _id: string; description: string; sender: { _id: string; username: string } | string; createdAt: string }) => 
+                {
                 const senderObj = msg.sender;
                 const senderId = typeof senderObj === "object" && senderObj !== null ? senderObj._id : senderObj;
                 const senderName = typeof senderObj === "object" && senderObj !== null ? senderObj.username : null;
@@ -85,9 +84,6 @@ console.log("id", id);
             console.error("❌ Erreur fetchMessages :", error);
         }
     };
-    
-    
-
 
     useEffect(() => {
         if (id) {
@@ -111,31 +107,61 @@ console.log("id", id);
         socketRef.current.on("connect", () => {
             console.log("✅ Connecté à Socket.IO");
             setSocketId(socketRef.current?.id || null);
+        //MODIF DE VENDREDI rejoindre le salon des que connecté pour avoir le message en live
+        if (id) {
+            socketRef.current?.emit("join", id);
+        }
         });
 
-        socketRef.current.on("message", (data: { text: string; senderId: string }) => {
-            console.log("📥 Reçu du serveur :", data);
-            if (!data.text.trim()) return;
-            const fromSelf = data.senderId === socketRef.current?.id;
-            setMessages(prev => [...prev, { id: Date.now().toString(), description: data.text, fromSelf, createdAt: new Date().toISOString(), sender: data.senderId, senderName: null }]);
-        });
+        // socketRef.current.on("message", (data: { text: string; senderId: string }) => {
+        //     console.log("📥 Reçu du serveur :", data);
+        //     if (!data.text.trim()) return;
+        //     const fromSelf = data.senderId === socketRef.current?.id;
+        //     setMessages(prev => [...prev, { id: Date.now().toString(), description: data.text, fromSelf, createdAt: new Date().toISOString(), sender: data.senderId, senderName: null }]);
+        // });
 
+        // MODIF DE VENDREDI suppression de trim, ca bug
+        socketRef.current.on("message", (data) => {
+            console.log("📥 Nouveau message reçu :", data);
+            const fromSelf = data.sender === socketRef.current?.id;
+        
+            setMessages((prev) => [
+                ...prev,
+                {
+                    id: data.id,
+                    description: data.description,
+                    sender: data.sender,
+                    fromSelf,
+                    createdAt: data.createdAt,
+                    senderName: null, 
+                }
+            ]);
+        });
+        
         return () => {
             socketRef.current?.disconnect();
         };
-    }, []);
+    }, [id]);
 
     const send = () => {
         if (inputValue.trim() === "") return;
+    //MODIF DE VENDREDI ajout de la structure du message avec les bons types
         const messageData = {
-            description: inputValue, 
-            sender: socketId,       
-            channel: id,              
+            description: inputValue,
+            sender: socketRef.current?.id,
+            channel: id, 
         };
     
-        socketRef.current?.emit("message", messageData); 
-        setInputValue("");
+        socketRef.current?.emit("message", messageData);
+        setInputValue(""); // on vide le champ
     };
+
+    // const send = () => {
+    //     if (inputValue.trim() === "") return;
+    //     socketRef.current?.emit("message", inputValue, "senderId");
+    //     setInputValue("");
+    //     // ❌ On n'ajoute plus le message ici
+    // };
 
     if (!channel) {
         return <div>Loading...</div>;
@@ -147,7 +173,6 @@ console.log("id", id);
     return (
         <div className="flex h-screen antialiased text-white">
             <div className="flex flex-row h-screen w-full overflow-x-hidden">
-                {/* Sidebar - tu peux le laisser tel quel */}
                 <div className="flex flex-col py-8 pl-6 pr-2 w-64 bg-black flex-shrink-0">
                     <span className="text-xs font-bold text-gray-500 uppercase mb-4">
                     <Link to="/channelslist"> ← retours aux salons</Link>
