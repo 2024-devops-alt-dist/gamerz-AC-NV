@@ -4,10 +4,9 @@ import HeroSearch from "../components/HeroSearch.tsx";
 import { useState, useEffect } from "react";
 
 interface Channel {
+  _id: string;
   channelName: string;
     connectedUsers: number;
-    url: string;
-
 }
 
 function ChannelsList() {
@@ -52,7 +51,7 @@ function ChannelsList() {
 
                     {channel.map((channel: Channel) => {
   return (
-    <ChannelCard channelName={channel.channelName} connectedUsers={channel.connectedUsers} url={channel.url} />
+    <ChannelCard _id={channel._id} channelName={channel.channelName} connectedUsers={channel.connectedUsers} />
   );
 })}
                     
