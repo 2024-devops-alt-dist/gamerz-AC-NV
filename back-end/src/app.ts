@@ -156,6 +156,7 @@
 
 
 
+
 import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
@@ -168,6 +169,7 @@ import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
 import Message from './models/messageModel.js';
+import cookie from 'cookie';
 
 //import socketController from "./controllers/socketsControllers.ts";
 
@@ -250,13 +252,17 @@ io.on("connection", (socket: Socket) => {
         // Sauvegarder le message dans la base de données
         try {
             const savedMessage = await newMessage.save();
+            const populatedMessage = await savedMessage.populate<{ sender: { username: string } }>("sender", "username");
+            
             io.to(text.channel).emit("message", {
-                id: savedMessage._id,
-                description: savedMessage.description,
-                sender: savedMessage.sender,
-                createdAt: savedMessage.createdAt,
-                channel: savedMessage.channel,
+                id: populatedMessage._id,
+                description: populatedMessage.description,
+                sender: populatedMessage.sender,
+                sendername: populatedMessage.sender.username,
+                createdAt: populatedMessage.createdAt,
+                channel: populatedMessage.channel,
             });
+            console.log("populate message", populatedMessage);
         } catch (error) {
             console.error("Erreur lors de la sauvegarde du message:", error);
         }
