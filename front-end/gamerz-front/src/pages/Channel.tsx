@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useParams, Link } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext  from "../store/AuthContext.tsx"; 
+
+
+
 
 interface Message {
     id: string;
@@ -16,23 +21,31 @@ interface Channel {
     channelName: string;
     connectedUsers: number;
     
-   
+    
 }
 
 
 function Channel() {
+    
+    //recup les données de l'utilisateur
+    const authContext = useContext(AuthContext); 
+    
+    if (!authContext) {
+        throw new Error("AuthContext is not provided");
+    }
+    
+    const user = authContext.user;
+    const username = user ? user.username : null;
+    console.log("username dans channel", username);
+    
  
 const { id } = useParams<{ id: string }>();
 console.log("id", id);
     const [channel, setChannel] = useState<Channel | null>(null);
-//    console.log("id", id);
-
     const fetchChannel = async () => {
         try {
             const response = await fetch(`http://localhost:5006/channels/${id}`);
-            //console.log("J'essaye", id);
 
-        
             if (!response.ok) {
                 throw new Error("Erreur lors de la récupération du channel");
             }
@@ -51,7 +64,7 @@ console.log("id", id);
     //const [message, setMessage] = useState<Message | null>(null);
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://localhost:5006/messages/channel/${id}`);
+            const response = await fetch(`http://localhost:5006/messages/channel/${id}`); 
             console.log("📨 Récupération des messages du salon :", id);
     
             if (!response.ok) {
@@ -77,99 +90,110 @@ console.log("id", id);
                     createdAt: msg.createdAt,
                 };
             });
-    
+            
             console.log("💬 Messages formatés :", formattedMessages);
             setMessages(formattedMessages);
         } catch (error) {
             console.error("❌ Erreur fetchMessages :", error);
         }
     };
-
+    
     useEffect(() => {
         if (id) {
             fetchMessages();
         }
     }, [id]);
-
-
+    
+    
     const socketRef = useRef<Socket | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState("");
     const [socketId, setSocketId] = useState<string | null>(null);
     console.log("socketId", socketId);
-
+    
     useEffect(() => {
         socketRef.current = io("http://localhost:5024", {
             withCredentials: true,
             transports: ["websocket"],
         });
-
+        
         socketRef.current.on("connect", () => {
             console.log("✅ Connecté à Socket.IO");
             setSocketId(socketRef.current?.id || null);
-        //MODIF DE VENDREDI rejoindre le salon des que connecté pour avoir le message en live
-        if (id) {
-            socketRef.current?.emit("join", id);
-        }
+            //MODIF DE VENDREDI rejoindre le salon des que connecté pour avoir le message en live
+            if (id) {
+                socketRef.current?.emit("join", id);
+            }
         });
-
+        
         // socketRef.current.on("message", (data: { text: string; senderId: string }) => {
-        //     console.log("📥 Reçu du serveur :", data);
-        //     if (!data.text.trim()) return;
-        //     const fromSelf = data.senderId === socketRef.current?.id;
-        //     setMessages(prev => [...prev, { id: Date.now().toString(), description: data.text, fromSelf, createdAt: new Date().toISOString(), sender: data.senderId, senderName: null }]);
-        // });
-
-        // MODIF DE VENDREDI suppression de trim, ca bug
-        socketRef.current.on("message", (data) => {
-            console.log("📥 Nouveau message reçu :", data);
-            const fromSelf = data.sender === socketRef.current?.id;
+            //     console.log("📥 Reçu du serveur :", data);
+            //     if (!data.text.trim()) return;
+            //     const fromSelf = data.senderId === socketRef.current?.id;
+            //     setMessages(prev => [...prev, { id: Date.now().toString(), description: data.text, fromSelf, createdAt: new Date().toISOString(), sender: data.senderId, senderName: null }]);
+            // });
+            
+            // MODIF DE VENDREDI suppression de trim, ca bug
+            socketRef.current.on("message", (data) => {
+                console.log("📥 Nouveau message reçu :", data);
+                const fromSelf = data.sender === socketRef.current?.id;
+                
+                // setMessages((prev) => [
+                //     ...prev,
+                //     {
+                //         id: data.id,
+                //         description: data.description,
+                //         sender: data.sender,
+                //         fromSelf,
+                //         createdAt: data.createdAt,
+                //         senderName: data.sendername, 
+                //     }
+                // ]);
+                setMessages(prev => [...prev, 
+                    { 
+                        id: Date.now().toString(), 
+                        description: data.description, 
+                        fromSelf, 
+                        createdAt: new Date().toISOString(), 
+                        sender: data.senderId, 
+                        senderName: null }]);
+            });
+            
+            return () => {
+                socketRef.current?.disconnect();
+            };
+        }, [id]);
         
-            setMessages((prev) => [
-                ...prev,
-                {
-                    id: data.id,
-                    description: data.description,
-                    sender: data.sender,
-                    fromSelf,
-                    createdAt: data.createdAt,
-                    senderName: null, 
-                }
-            ]);
-        });
+        const send = () => {
+            if (inputValue.trim() === "") return;
+            //MODIF DE VENDREDI ajout de la structure du message avec les bons types
+            const messageData = {
+                description: inputValue,
+                sender: socketRef.current?.id,
+                sendername: username,
+                //createdAt: new Date().toISOString(),
+                
+                channel: id, 
+            };
+            
+            socketRef.current?.emit("message", messageData);
+            //  socketRef.current?.emit("message", inputValue, "senderId", messageData);
+            setInputValue(""); // on vide le champ
+        };
         
-        return () => {
-            socketRef.current?.disconnect();
-        };
-    }, [id]);
-
-    const send = () => {
-        if (inputValue.trim() === "") return;
-    //MODIF DE VENDREDI ajout de la structure du message avec les bons types
-        const messageData = {
-            description: inputValue,
-            sender: socketRef.current?.id,
-            channel: id, 
-        };
-    
-        socketRef.current?.emit("message", messageData);
-        setInputValue(""); // on vide le champ
-    };
-
-    // const send = () => {
-    //     if (inputValue.trim() === "") return;
-    //     socketRef.current?.emit("message", inputValue, "senderId");
-    //     setInputValue("");
-    //     // ❌ On n'ajoute plus le message ici
-    // };
-
-    if (!channel) {
-        return <div>Loading...</div>;
-    }
-
-
-    console.log("channel en dehors de la fonction", channel);
-    console.log("messages en dehors de la fonction", messages)
+        // const send = () => {
+            //     if (inputValue.trim() === "") return;
+            //     socketRef.current?.emit("message", inputValue, "senderId");
+            //     setInputValue("");
+            // };
+            
+            if (!channel) {
+                return <div>Loading...</div>;
+            }
+            
+            
+            console.log("channel en dehors de la fonction", channel);
+            console.log("messages en dehors de la fonction", messages);
     return (
         <div className="flex h-screen antialiased text-white">
             <div className="flex flex-row h-screen w-full overflow-x-hidden">
@@ -214,7 +238,7 @@ console.log("id", id);
                                     } col-end-${msg.fromSelf ? "13" : "8"} p-3 rounded-lg`}
                                 >
                                     <div className={`flex flex-col ${msg.fromSelf ? "items-end" : "items-start"}`}>
-                                        {/* Affichage du socketId au-dessus du message */}
+                                        {/* Affichage du socketId et du username au-dessus du message */}
                                         {!msg.fromSelf && (
                                             <div className="text-sm text-[#1EDCB3] ml-3 mb-1 font-black">@{msg.senderName ?? msg.sender} </div>
                                         )}
