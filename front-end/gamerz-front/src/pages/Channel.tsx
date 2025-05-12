@@ -415,7 +415,7 @@ console.log("id", id);
                 console.log("📥 Nouveau message reçu :", data);
             
 
-               const fromSelf = data.sender === socketRef.current?.id;
+               const fromSelf = data.senderId === socketRef.current?.id;
                 console.log("fromSelf", fromSelf);
                 console.log("data.senderId", data.senderId);
                 console.log("data.sendername", data.sendername);
@@ -433,18 +433,19 @@ console.log("id", id);
                 //         senderName: data.sendername, 
                 //     }
                 // ]);
+                // IL FAUT METTRE data.message.description !!!
                 setMessages(prev => [...prev, 
                     { 
                         id: Date.now().toString(), 
-                        description: data.description, 
-                        fromSelf, 
-                        createdAt: new Date().toISOString(), 
-                        sender: data.senderId, 
-                        senderName: data.sendername ?? null }]);
-                        console.log("sender data.senderId", data.senderId);
-                        console.log("sender data.sendername", data.sendername);
-                        console.log("sender data", data);
-                        console.log("sender data sender", data.sender);
+            description: data.message.description, 
+            fromSelf, 
+            createdAt: data.message.createdAt, 
+            sender: data.message.sender, 
+            senderName: data.message.sendername ?? null 
+                    }]);
+                console.log("messages après reception MESSAGES", messages);
+                console.log("messages après reception DATA.MESSAGES", data.message);
+                console.log("messages après reception DATA", data);
             });
             console.log("messages", messages);
             
