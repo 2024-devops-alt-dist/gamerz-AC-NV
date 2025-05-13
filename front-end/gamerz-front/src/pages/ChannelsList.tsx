@@ -20,7 +20,11 @@ function ChannelsList() {
         console.log("fetchChannels");
 
         // On récupère les données
+
+        //const response = await fetch("http://localhost:5024/channels");
+
         const response = await fetch("https://gamerz-ac-nv-2.onrender.com/channels");
+
 
         // On transforme les données en JSON
         const data = await response.json();

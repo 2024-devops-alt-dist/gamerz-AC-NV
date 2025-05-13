@@ -18,7 +18,11 @@ function Inscription() {
 
         console.log("Données envoyées :", { email, username, password, birthdate, avatar, motivation, role, status });
 
+
+       // const response = await fetch('http://localhost:5024/users', {
+
         const response = await fetch('https://gamerz-ac-nv-2.onrender.com/users', {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

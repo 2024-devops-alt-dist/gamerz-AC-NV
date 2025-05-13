@@ -16,6 +16,9 @@ function Dashboard() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+
+      //  const res = await fetch("http://localhost:5024/users", {
+
         const res = await fetch("https://gamerz-ac-nv-2.onrender.com/users", {
           credentials: "include",
         });
@@ -31,7 +34,11 @@ function Dashboard() {
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     try {
+
+     // const res = await fetch(`http://localhost:5024/users/${id}`, {
+
       const res = await fetch(`https://gamerz-ac-nv-2.onrender.com/users/${id}`, {
+
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +61,11 @@ function Dashboard() {
 
   const handleDelete = async (id: string, status: string) => {
     try {
+
+    //  const res = await fetch(`http://localhost:5024/users/${id}`, {
+
       const res = await fetch(`https://gamerz-ac-nv-2.onrender.com/users/${id}`, {
+
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

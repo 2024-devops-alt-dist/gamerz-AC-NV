@@ -56,9 +56,7 @@ const io = new Server(server, {
     }
 });
 
-server.listen(5024, () => {
-    console.log("SOCKET IO:  Serveur démarré sur le port 5024");
-});
+
 
 io.on("connection", (socket: Socket) => {
     console.log(`🔌 Client connecté: ${socket.id}`);
@@ -123,6 +121,7 @@ io.on("connection", (socket: Socket) => {
     });
 });
 
+
 //socketController(io); // Passer l'instance de io au socketController
 
 
@@ -144,62 +143,6 @@ async function connectDB() {
 
 connectDB()
 
-export default app; 
 
-// import express, { Application } from "express";
-// import cors from "cors";
-// import mongoose from "mongoose";
-// import cookieParser from "cookie-parser";
-// import dotenv from "dotenv";
+export {app, server};
 
-// import authRoutes from "./routes/authRoutes";
-// import userRoutes from "./routes/usersRoutes";
-// import messagesRoutes from "./routes/messagesRoutes";
-// import channelsRoutes from "./routes/channelsRoutes";
-
-// dotenv.config();
-
-// const app: Application = express();
-
-// // Middleware
-// app.use(express.json());
-// app.use(cookieParser());
-
-// // CORS
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "https://gamerz-leclone-url.vercel.app"
-// ];
-
-// app.use(cors({
-//   origin: allowedOrigins,
-//   credentials: true,
-// }));
-
-// // Logger
-// app.use((req, res, next) => {
-//   console.log(`📢 ${req.method} ${req.url}`);
-//   next();
-// });
-
-// // Routes
-// app.use("/auth", authRoutes);
-// app.use("/users", userRoutes);
-// app.use("/messages", messagesRoutes);
-// app.use("/channels", channelsRoutes);
-
-// // Connexion DB
-// async function connectDB() {
-//   try {
-//     const mongoUrl = process.env.MONGO_URL;
-//     if (!mongoUrl) throw new Error("MONGO_URL non défini");
-//     await mongoose.connect(mongoUrl);
-//     console.log("✅ Connecté à MongoDB");
-//   } catch (err) {
-//     console.error("❌ Erreur Mongo DB :", err);
-//   }
-// }
-
-// connectDB();
-
-// export default app;
