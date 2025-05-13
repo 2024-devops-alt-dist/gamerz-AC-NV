@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log("ALLEZZ CHECK AUTH");
   
       try {
-        const res = await fetch('http://localhost:5006/me', {
+        const res = await fetch('http://localhost:5024/me', {
           credentials: 'include',
         });
   

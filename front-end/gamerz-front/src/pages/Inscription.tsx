@@ -18,7 +18,7 @@ function Inscription() {
 
         console.log("Données envoyées :", { email, username, password, birthdate, avatar, motivation, role, status });
 
-        const response = await fetch('http://localhost:5006/users', {
+        const response = await fetch('http://localhost:5024/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

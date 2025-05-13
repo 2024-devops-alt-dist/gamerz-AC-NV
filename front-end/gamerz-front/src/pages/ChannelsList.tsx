@@ -20,7 +20,7 @@ function ChannelsList() {
         console.log("fetchChannels");
 
         // On récupère les données
-        const response = await fetch("http://localhost:5006/channels");
+        const response = await fetch("http://localhost:5024/channels");
 
         // On transforme les données en JSON
         const data = await response.json();
