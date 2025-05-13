@@ -56,9 +56,7 @@ const io = new Server(server, {
     }
 });
 
-server.listen(5024, () => {
-    console.log("SOCKET IO:  Serveur démarré sur le port 5024");
-});
+
 
 io.on("connection", (socket: Socket) => {
     console.log(`🔌 Client connecté: ${socket.id}`);
@@ -123,6 +121,7 @@ io.on("connection", (socket: Socket) => {
     });
 });
 
+
 //socketController(io); // Passer l'instance de io au socketController
 
 
@@ -144,4 +143,6 @@ async function connectDB() {
 
 connectDB()
 
-export default app; 
+
+
+export {app, server};
