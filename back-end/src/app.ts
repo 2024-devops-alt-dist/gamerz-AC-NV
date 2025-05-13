@@ -9,10 +9,9 @@ import channelsRoutes from './routes/channelsRoutes.ts';
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
+import Message from "./models/messageModel.ts";
 //import socketController from "./controllers/socketsControllers.ts";
-
 //import {router as userRoutes} from './routes/usersRoutes.js';
-
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -73,13 +72,54 @@ io.on("connection", (socket: Socket) => {
         socket.join(channelId);
     });
 
-    socket.on("message", (text) => {
-        console.log(`📝 Message reçu de ${socket.id} :`, text);
-        if (!text.trim()) return; // sécurité aussi ici
+    socket.on("message", (message) => {
+        console.log(`📝 Message reçu de ${socket.id} :`, message);
+        // if (!text.description || !text.sender || !text.channel){
+        //     console.log("VOICI LE TEXTE" + text.description, text.sender, text.channel) // sécurité
+        //     return;
+        // };
+        const newMessage = new Message({
+            description: message.description,
+            sender: message.sender,
+            sendername: message.sendername,
+            channel: message.channel,
+            createdAt: new Date(),
+        });
+        // Save the message to the database
+        try {
+            newMessage.save()
+                .then(() => {
+                    console.log("Message enregistré dans la base de données" + newMessage);
+                })
+                .catch((err) => {
+                    console.error("Erreur lors de l'enregistrement du message :", err);
+                });
+        }
+        catch (err) {
+            console.error("Erreur lors de l'enregistrement du message :", err);
+        }
+        // console.log("MESSAGE", message);
+
+
+
+        // console.log("NOUVEAU MESSAGE", newMessage);
+        // newMessage.save()
+        //     .then(() => {
+        //         console.log("Message enregistré dans la base de données");
+        //     })
+        //     .catch((err) => {
+        //         console.error("Erreur lors de l'enregistrement du message :", err);
+        //     });
+        // Emit the message to all clients in the channel
+        console.log("MESSAGE", message);
+
+       // if (!message.trim()) return; // sécurité aussi ici
+
         io.emit("message", {
-            text,
+            message,
             senderId: socket.id,
         });
+
     });
 });
 
