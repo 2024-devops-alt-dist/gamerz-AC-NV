@@ -48,9 +48,6 @@
 //     }, [id]);
 
 
-
-
-
 //     const [message, setMessage] = useState<Message | null>(null);
 //     const fetchMessages = async () => {
 //         try {
@@ -321,7 +318,7 @@ console.log("id", id);
     const [channel, setChannel] = useState<Channel | null>(null);
     const fetchChannel = async () => {
         try {
-            const response = await fetch(`http://localhost:5006/channels/${id}`);
+            const response = await fetch(`https://gamerz-ac-nv-2.onrender.com/channels/${id}`);
 
             if (!response.ok) {
                 throw new Error("Erreur lors de la récupération du channel");
@@ -341,7 +338,7 @@ console.log("id", id);
     //const [message, setMessage] = useState<Message | null>(null);
     const fetchMessages = async () => {
         try {
-            const response = await fetch(`http://localhost:5006/messages/channel/${id}`); 
+            const response = await fetch(`https://gamerz-ac-nv-2.onrender.com/messages/channel/${id}`); 
             console.log("📨 Récupération des messages du salon :", id);
     
             if (!response.ok) {
