@@ -168,8 +168,7 @@ app.use(cookieParser());
 // CORS
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://gamerz.vercel.app",
-  "https://gamerz-leclone-vercel.vercel.app"
+  "https://gamerz-leclone-url.vercel.app"
 ];
 
 app.use(cors({

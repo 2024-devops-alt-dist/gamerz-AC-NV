@@ -18,8 +18,7 @@ const PORT = parseInt(process.env.PORT || '5006', 10);
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://gamerz.vercel.app",
-  "https://gamerz-leclone-vercel.vercel.app"
+  "https://gamerz-leclone-url.vercel.app"
 ];
 
 const server = http.createServer(app);
