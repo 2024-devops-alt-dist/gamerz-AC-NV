@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../store/AuthContext.tsx";
+import { useAuth } from "../store/useAuth";
 import { useNavigate } from "react-router-dom";
 
 function Connexion() {
@@ -17,11 +17,7 @@ function Connexion() {
 		console.log("Données envoyées dans le form :", { username, password });
 
 
-
-		//const response = await fetch('http://localhost:5024/auth', {
-
 		const response = await fetch('https://gamerz-ac-nv-2.onrender.com/auth', {
-
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
