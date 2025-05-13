@@ -197,7 +197,7 @@ async function connectDB() {
     await mongoose.connect(mongoUrl);
     console.log("✅ Connecté à MongoDB");
   } catch (err) {
-    console.error("❌ Erreur MongoDB :", err);
+    console.error("❌ Erreur Mongo DB :", err);
   }
 }
 
