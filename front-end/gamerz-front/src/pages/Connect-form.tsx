@@ -17,7 +17,7 @@ function Connexion() {
 		console.log("Données envoyées dans le form :", { username, password });
 
 
-		const response = await fetch('http://localhost:5006/auth', {
+		const response = await fetch('https://gamerz-ac-nv-2.onrender.com/auth', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
