@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "ts-node": {
     "loader": "ts-node/esm"
   },
