@@ -19,7 +19,7 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5024", "https://gamerz-ac-nv-forked.vercel.app"],
+    origin: ["http://localhost:5173", "http://localhost:5024", "gamerz-ac-nv-fork2.vercel.app"],
     credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
 })); 
 // app.use((req, res, next) => {
@@ -50,7 +50,7 @@ app.use("/auth", authRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5024", "https://gamerz-ac-nv-forked.vercel.app","https://gamerz-ac-nv-forked.vercel.app"],
+        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5024","gamerz-ac-nv-fork2.vercel.app"],
         methods: ["GET", "POST"],
         credentials: true //  header à true => permet d'envoyer des cookies
     }
