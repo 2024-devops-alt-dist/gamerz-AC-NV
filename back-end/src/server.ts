@@ -1,4 +1,4 @@
-import {server} from "./app.ts";
+import {server} from "./app";
 
 
 server.listen(5024, () => {
