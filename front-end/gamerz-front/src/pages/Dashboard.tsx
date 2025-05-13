@@ -117,7 +117,7 @@ function Dashboard() {
             <SearchUser search={search} onSearchChange={setSearch} />
           </div>
 
-          <div className="overflow-x-auto">
+          {/* <div className="overflow-x-auto">
             <table className="min-w-full text-sm sm:text-base divide-y divide-gray-200 text-gray-100">
               <thead className="bg-gray-800 text-white">
                 <tr>
@@ -184,7 +184,93 @@ function Dashboard() {
                 )}
               </tbody>
             </table>
-          </div>
+          </div> */}
+          <div className="hidden md:block overflow-x-auto">
+  <table className="min-w-full text-sm sm:text-base divide-y divide-gray-200 text-gray-100">
+    <thead className="bg-gray-800 text-white">
+      <tr>
+        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase">Nom</th>
+        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase">Email</th>
+        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase">Motivation</th>
+        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium uppercase">Statut</th>
+      </tr>
+    </thead>
+    <tbody className="bg-gray-700 divide-y divide-gray-600">
+      {filteredUsers.map((user) => (
+        <tr key={user._id}>
+          <td className="px-4 sm:px-6 py-4 whitespace-nowrap">{user.username}</td>
+          <td className="px-4 sm:px-6 py-4 whitespace-nowrap">{user.email}</td>
+          <td className="px-4 sm:px-6 py-4 text-xs sm:text-sm max-h-[100px] overflow-y-auto">
+            <div className="max-h-[100px] overflow-y-auto">{user.motivation}</div>
+          </td>
+          <td className="px-4 sm:px-6 py-4 whitespace-nowrap capitalize">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 justify-evenly">
+              <select
+                className="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded"
+                value={user.status}
+                onChange={(e) => handleStatusChange(user._id, e.target.value)}
+              >
+                <option value="pending">En attente</option>
+                <option value="approved">Validé</option>
+                <option value="refused">Refusé</option>
+              </select>
+              <button
+                className="bg-red-500 text-white px-2 py-1 rounded"
+                onClick={() => handleConfirmDelete(user._id)}
+              >
+                🗑️ Delete !
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))}
+      {filteredUsers.length === 0 && (
+        <tr>
+          <td colSpan={4} className="px-6 py-4 text-center text-gray-400">
+            Aucun utilisateur trouvé.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+
+{/* VERSION MOBILE (cartes empilées) */}
+<div className="block md:hidden space-y-4">
+  {filteredUsers.map((user) => (
+    <div key={user._id} className="bg-gray-700 p-4 rounded-lg text-white shadow-md">
+      <p className="font-semibold">Nom :</p>
+      <p className="mb-2">{user.username}</p>
+
+      <p className="font-semibold">Email :</p>
+      <p className="mb-2">{user.email}</p>
+
+      <p className="font-semibold">Motivation :</p>
+      <p className="italic text-sm mb-2 max-h-[100px] overflow-y-auto">{user.motivation}</p>
+
+      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2">
+        <select
+          className="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded"
+          value={user.status}
+          onChange={(e) => handleStatusChange(user._id, e.target.value)}
+        >
+          <option value="pending">En attente</option>
+          <option value="approved">Validé</option>
+          <option value="refused">Refusé</option>
+        </select>
+        <button
+          className="bg-red-500 text-white px-2 py-1 rounded"
+          onClick={() => handleConfirmDelete(user._id)}
+        >
+          🗑️ Delete !
+        </button>
+      </div>
+    </div>
+  ))}
+  {filteredUsers.length === 0 && (
+    <p className="text-center text-gray-400">Aucun utilisateur trouvé.</p>
+  )}
+</div>
         </div>
       </div>
     </div>
