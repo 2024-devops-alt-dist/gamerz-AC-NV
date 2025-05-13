@@ -2,14 +2,14 @@ import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
 import cookieParser from "cookie-parser";
-import authRoutes from './routes/authRoutes.ts';
-import userRoutes from './routes/usersRoutes.ts'; 
-import messagesRoutes from './routes/messagesRoutes.ts'; 
-import channelsRoutes from './routes/channelsRoutes.ts'; 
+import authRoutes from './routes/authRoutes';
+import userRoutes from './routes/usersRoutes'; 
+import messagesRoutes from './routes/messagesRoutes'; 
+import channelsRoutes from './routes/channelsRoutes'; 
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
-import Message from "./models/messageModel.ts";
+import Message from "./models/messageModel";
 //import socketController from "./controllers/socketsControllers.ts";
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
@@ -19,16 +19,16 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5024"],
+    origin: ["http://localhost:5173", "http://localhost:5024", "https://gamerz-ac-nv-forked.vercel.app"],
     credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
 })); 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:5173"); 
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:5173"); 
+//     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//     res.header("Access-Control-Allow-Credentials", "true");
+//     next();
+// });
 
 app.use(cookieParser()); // Middleware pour parser les cookies
 
@@ -50,7 +50,7 @@ app.use("/auth", authRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5024"],
+        origin: ["http://localhost:5173", "http://localhost:5006", "http://localhost:5024", "https://gamerz-ac-nv-forked.vercel.app","https://gamerz-ac-nv-forked.vercel.app"],
         methods: ["GET", "POST"],
         credentials: true //  header à true => permet d'envoyer des cookies
     }
@@ -144,5 +144,5 @@ async function connectDB() {
 connectDB()
 
 
-
 export {app, server};
+
