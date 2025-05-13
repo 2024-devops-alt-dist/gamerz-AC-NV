@@ -53,6 +53,7 @@ export const postUser = async (req: Request, res: Response) => {
 export const getUser = async (req: Request, res: Response) => {
     const { status } = req.query;  // recup statut
     const filter = status ? { status } : {};  // filtre par statut
+    console.log("req ici", req);
     try {
         const users = await User.find(filter);    
         res.status(200).json(users);   
