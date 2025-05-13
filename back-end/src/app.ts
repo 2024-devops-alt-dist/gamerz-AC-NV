@@ -2,14 +2,14 @@ import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
 import cookieParser from "cookie-parser";
-import authRoutes from './routes/authRoutes';
-import userRoutes from './routes/usersRoutes'; 
-import messagesRoutes from './routes/messagesRoutes'; 
-import channelsRoutes from './routes/channelsRoutes'; 
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/usersRoutes.js'; 
+import messagesRoutes from './routes/messagesRoutes.js'; 
+import channelsRoutes from './routes/channelsRoutes.js'; 
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
-import Message from "./models/messageModel";
+import Message from "./models/messageModel.js";
 //import socketController from "./controllers/socketsControllers.ts";
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
@@ -96,22 +96,8 @@ io.on("connection", (socket: Socket) => {
         catch (err) {
             console.error("Erreur lors de l'enregistrement du message :", err);
         }
-        // console.log("MESSAGE", message);
-
-
-
-        // console.log("NOUVEAU MESSAGE", newMessage);
-        // newMessage.save()
-        //     .then(() => {
-        //         console.log("Message enregistré dans la base de données");
-        //     })
-        //     .catch((err) => {
-        //         console.error("Erreur lors de l'enregistrement du message :", err);
-        //     });
-        // Emit the message to all clients in the channel
+       
         console.log("MESSAGE", message);
-
-       // if (!message.trim()) return; // sécurité aussi ici
 
         io.emit("message", {
             message,
@@ -122,7 +108,7 @@ io.on("connection", (socket: Socket) => {
 });
 
 
-//socketController(io); // Passer l'instance de io au socketController
+//socketController(io); // Passer l'instance de io au socketController qui n est pas encore refacto
 
 
 

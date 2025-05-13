@@ -1,7 +1,7 @@
 import {Router} from "express";
 
 //import usersControllers from "../controllers/usersControllers.js";
-import { postUser, getUser, getOneUser, deleteUser, updateUser,approveUser, refuseUser, getCurrentUser } from "../controllers/usersControllers";
+import { postUser, getUser, getOneUser, deleteUser, updateUser,approveUser, refuseUser, getCurrentUser } from "../controllers/usersControllers.js";
 //import authMiddleware from "../utils/authMiddleware.ts";
 
 console.log("getOneUser:", getOneUser);

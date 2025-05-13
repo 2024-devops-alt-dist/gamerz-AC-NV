@@ -1,7 +1,7 @@
 import {Router} from "express";
 
 //import MessagesControllers from "../controllers/MessagesControllers.js";
-import { postMessage, getMessages, getOneMessage, deleteMessage, updateMessage, getChannelMessages } from "../controllers/messagesControllers";
+import { postMessage, getMessages, getOneMessage, deleteMessage, updateMessage, getChannelMessages } from "../controllers/messagesControllers.js";
 
 console.log("getOneMessage:", getOneMessage);
 
