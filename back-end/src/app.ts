@@ -19,7 +19,7 @@ dotenv.config();
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5024", "https://gamerz.vercel.app", "https://gamerz-leclone-vercel.vercel.app"],
+    origin: ["http://localhost:5173", "http://localhost:5024", "gamerz-final-vercel.vercel.app"],
     credentials: true // nécessite le "Access-Control-Allow-Credentials" header à true => permet d'envoyer des cookies
 })); 
 // app.use((req, res, next) => {
