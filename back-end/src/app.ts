@@ -47,6 +47,7 @@ app.use("/auth", authRoutes);
 
 
 //SOCKET.IO
+const channelUsers = new Map<string, Set<string>>();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
@@ -60,15 +61,36 @@ const io = new Server(server, {
 
 io.on("connection", (socket: Socket) => {
     console.log(`🔌 Client connecté: ${socket.id}`);
+socket.on("join", (channelId: string) => {
+    console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
+    socket.join(channelId);
 
-    socket.on("disconnect", () => {
-        console.log(`❌ Client déconnecté: ${socket.id}`);
-    });
+    if (!channelUsers.has(channelId)) {
+        channelUsers.set(channelId, new Set());
+    }
+    channelUsers.get(channelId)!.add(socket.id);
 
-    socket.on("join", (channelId: string) => {
-        console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
-        socket.join(channelId);
-    });
+    // Broadcast la nouvelle liste des users connectés au channel
+    io.to(channelId).emit("userList", Array.from(channelUsers.get(channelId)!));
+});
+
+socket.on("disconnect", () => {
+    console.log(`❌ Client déconnecté: ${socket.id}`);
+    
+    for (const [channelId, usersSet] of channelUsers.entries()) {
+        if (usersSet.has(socket.id)) {
+            usersSet.delete(socket.id);
+            // Mettre à jour la liste dans le salon
+            io.to(channelId).emit("userList", Array.from(usersSet));
+            // Si plus personne, on peut supprimer l'entrée (optionnel)
+            if (usersSet.size === 0) {
+                channelUsers.delete(channelId);
+            }
+        }
+    }
+});
+
+
 
     socket.on("message", (message) => {
         console.log(`📝 Message reçu de ${socket.id} :`, message);
