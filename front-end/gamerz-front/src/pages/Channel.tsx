@@ -30,6 +30,9 @@ function Channel() {
     
     const user = authContext.user;
     const username = user ? user.username : null;
+    const [connectedUsers, setConnectedUsers] = useState<{ socketId: string; username: string }[]>([]);
+    const [usersList, setUsersList] = useState<{ socketId: string; username: string }[]>([]);
+
     console.log("username dans channel", username);
     
 const { id } = useParams<{ id: string }>();
@@ -110,14 +113,24 @@ console.log("id", id);
             withCredentials: true,
             transports: ["websocket"],
         });
+
+        
+        socketRef.current.on("users", (userList) => {
+            console.log("👥 Utilisateurs connectés :", userList);
+            setConnectedUsers(userList);
+            console.log("connectedUsers", connectedUsers);
+            console.log("userList", userList);
+        });
+
         
         socketRef.current.on("connect", () => {
             console.log("✅ Connecté à Socket.IO");
             setSocketId(socketRef.current?.id || null);
             //MODIF DE VENDREDI rejoindre le salon des que connecté pour avoir le message en live
-            if (id) {
-                socketRef.current?.emit("join", id);
+            if (id && username) {
+                socketRef.current?.emit("join", { channelId: id, username });
             }
+            
         });
         
             // MODIF DE VENDREDI suppression de trim, ca bug
@@ -203,14 +216,19 @@ console.log("id", id);
                     </div>
                     <div className="flex flex-col mt-8">
                         <div className="flex flex-row items-center justify-between text-xs">
-                            <span className="font-bold">Joueurs connectés</span>
+                            <span className="font-bold">Joueurs connectés {connectedUsers.length}</span>
                             <span className="flex items-center justify-center bg-black text-[#1EDCB3] h-4 w-4 rounded-full">{channel.connectedUsers}</span>
                         </div>
                         <div className="flex flex-col space-y-1 mt-4 mx-2 h-48 overflow-y-auto">
-                            <button className="flex flex-row items-center hover:bg-white/30 rounded-xl p-2">
-                                <div className="ml-2 text-sm font-semibold">{socketId}</div>
+                            {connectedUsers.map((user) => (
+                            <button
+                                key={user.socketId}
+                                className="flex flex-row items-center hover:bg-white/30 rounded-xl p-2"
+                            >
+                                <div className="ml-2 text-sm font-semibold">{user.socketId}</div>
                             </button>
-                        </div>
+                            ))}
+                            </div>
                     </div>
                 </div>
 

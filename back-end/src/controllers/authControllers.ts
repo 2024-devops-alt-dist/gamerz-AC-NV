@@ -32,12 +32,12 @@ export const authUser = async (req: Request, res: Response, next: NextFunction):
             process.env.JWT_SECRET_KEY as string, 
             { expiresIn: '24h' }
         );
-    //     const refreshToken = jwt.sign(
-    //         { userId: user._id, username: user.username, role: user.role },
-    //         process.env.JWT_SECRET_KEY as string,
-    //         { expiresIn: '7d' }
-    //     );
-    //    console.log("refreshToken", refreshToken)
+        const refreshToken = jwt.sign(
+            { userId: user._id, username: user.username, role: user.role },
+            process.env.JWT_SECRET_KEY as string,
+            { expiresIn: '7d' }
+        );
+       console.log("refreshToken", refreshToken)
         console.log("token", token)
         res.cookie('token', token, {
             httpOnly: true,
