@@ -19,7 +19,7 @@ console.log("user dans header", username) // recup le username ou null si non co
       <header className="text-gray-600 body-font bg-black">
         <div className="mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <Link to="/" className="flex title-font font-medium items-center text-white mb-4 md:mb-0">
-            <img src="src/assets/logo.png" alt="GAMERZ" className="w-40" />
+            <img src="/logo.png" alt="GAMERZ" className="w-40" />
           </Link>
           <nav className="md:ml-auto flex flex-wrap items-center text-base justify-center">
             <a className="mr-5 hover:text-gray-900">À propos</a>

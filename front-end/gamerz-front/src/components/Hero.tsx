@@ -6,7 +6,7 @@ function Hero() {
         <section className="text-gray-600 body-font bg-cover bg-center bg-no-repeat bg-[url('./assets/landing.png')]">
       <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
         <div className="text-center lg:w-2/3 w-full">
-        <img src='src/assets/logo.png' alt="GAMERZ" className="mt-100"/>
+        <img src='/logo.png' alt="GAMERZ" className="mt-100"/>
           <h1 className="title-font mt-5 sm:text-4xl text-3xl mb-4 font-medium text-white">La plus grande communauté try-hard</h1>
           <div className="flex justify-center">
 		  <Link to="/inscription" className="cursor-pointer"><button className="inline-flex cursor-pointer text-[30px] text-white bg-gradient-to-b rounded-full from-slate-500 border-2 border-[#1EDCB3] to-slate-900 border-0 pt-3 py-2 px-10 focus:outline-none shadow-cyan-500/100"><h1>Nous rejoindre</h1></button></Link>
