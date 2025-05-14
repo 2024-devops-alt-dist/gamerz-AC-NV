@@ -2,19 +2,21 @@ import express, {Application} from "express";
 import cors from "cors";
 import mongoose from 'mongoose';
 import cookieParser from "cookie-parser";
-import authRoutes from './routes/authRoutes';
-import userRoutes from './routes/usersRoutes'; 
-import messagesRoutes from './routes/messagesRoutes'; 
-import channelsRoutes from './routes/channelsRoutes'; 
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/usersRoutes.js'; 
+import messagesRoutes from './routes/messagesRoutes.js'; 
+import channelsRoutes from './routes/channelsRoutes.js'; 
 import { Socket } from "socket.io";
 import { Server } from "socket.io";
 import http from "http";
-import Message from "./models/messageModel";
+import Message from "./models/messageModel.js";
 //import socketController from "./controllers/socketsControllers.ts";
 //import {router as userRoutes} from './routes/usersRoutes.js';
 //import User from './models/userModel.js';
 import dotenv from 'dotenv';
 dotenv.config();
+const channelUsersMap = new Map<string, Set<string>>();
+
 
 const app: Application = express();
 app.use(express.json());// accepter le format json sur les requetes
@@ -63,11 +65,28 @@ io.on("connection", (socket: Socket) => {
 
     socket.on("disconnect", () => {
         console.log(`❌ Client déconnecté: ${socket.id}`);
+        // Supprimer l'utilisateur de tous les canaux
+        channelUsersMap.forEach((users, channelId) => {
+            if (users.has(socket.id)) {
+                users.delete(socket.id);
+                console.log(`❌ Client ${socket.id} supprimé du canal ${channelId}`);
+                // Emit la liste des utilisateurs dans le canal 
+                io.to(channelId).emit("userList", Array.from(users));
+            }
+        });
     });
 
     socket.on("join", (channelId: string) => {
         console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
         socket.join(channelId);
+        if (!channelUsersMap.has(channelId)) {
+            channelUsersMap.set(channelId, new Set());
+        }
+        channelUsersMap.get(channelId)?.add(socket.id);
+        console.log(`🔑 Utilisateurs dans le canal ${channelId}:`, Array.from(channelUsersMap.get(channelId) || []));
+
+        // Emit la liste des utilisateurs dans le canal 
+        io.to(channelId).emit("userList", Array.from(channelUsersMap.get(channelId) || []));
     });
 
     socket.on("message", (message) => {

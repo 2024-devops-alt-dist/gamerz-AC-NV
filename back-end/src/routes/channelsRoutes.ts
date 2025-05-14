@@ -1,7 +1,7 @@
 import {Router} from "express";
 
 //import usersControllers from "../controllers/usersControllers.js";
-import { postChannel, getChannels, getOneChannel, deleteChannel, updateChannel } from "../controllers/channelsControllers";
+import { postChannel, getChannels, getOneChannel, deleteChannel, updateChannel } from "../controllers/channelsControllers.js";
 
 console.log("getOneUser:", getOneChannel);
 

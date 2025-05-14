@@ -113,13 +113,31 @@
 //   "include": ["src/**/*"],
 //   "exclude": ["node_modules"]
 // }
+// {
+//     "compilerOptions": {
+//         "target": "ES6",
+//         "module": "CommonJS",
+//         "outDir": "dist",
+//         "rootDir": "src",
+//         "strict": true,
+//         "esModuleInterop": true
+//     }
+// }
+
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "module": "CommonJS",
-        "outDir": "dist",
-        "rootDir": "src",
-        "strict": true,
-        "esModuleInterop": true
-    }
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "ts-node": {
+    "esm": true
+  },
+  "include": ["src"]
 }
