@@ -1,4 +1,4 @@
-function HeroSearch({}: {}) {
+function HeroSearch( ) {
     return (
         <>
         <div className="py-42 mt- px-1 md:px-8 text-left relative text-white font-bold text-2xl md:text-3xl overflow-auto bg-cover bg-center bg-no-repeat bg-[url('./assets/channelsheader.png')]">
