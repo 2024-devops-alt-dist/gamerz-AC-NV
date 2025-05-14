@@ -31,8 +31,6 @@ function Channel() {
     const user = authContext.user;
     const username = user ? user.username : null;
     const [connectedUsers, setConnectedUsers] = useState<{ socketId: string; username: string }[]>([]);
-    const [usersList, setUsersList] = useState<{ socketId: string; username: string }[]>([]);
-
     console.log("username dans channel", username);
     
 const { id } = useParams<{ id: string }>();
