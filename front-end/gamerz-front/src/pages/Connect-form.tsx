@@ -44,6 +44,7 @@ function Connexion() {
 					email: data.email || "",
 					motivation: data.motivation || "",
 					status: data.status || "",
+					role: data.role || "user",
 					isAuthenticated: true
 				});
 			 }else{

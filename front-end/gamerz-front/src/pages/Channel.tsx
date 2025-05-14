@@ -5,9 +5,6 @@ import { useParams, Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext  from "../store/AuthContext.tsx"; 
 
-
-
-
 interface Message {
     id: string;
     description: string;
@@ -21,16 +18,12 @@ interface Channel {
     _id: string;
     channelName: string;
     connectedUsers: number;
-    
-    
 }
 
 
 function Channel() {
-    
     //recup les données de l'utilisateur
     const authContext = useContext(AuthContext); 
-    
     if (!authContext) {
         throw new Error("AuthContext is not provided");
     }
@@ -39,17 +32,13 @@ function Channel() {
     const username = user ? user.username : null;
     console.log("username dans channel", username);
     
- 
 const { id } = useParams<{ id: string }>();
 console.log("id", id);
     const [channel, setChannel] = useState<Channel | null>(null);
     const fetchChannel = async () => {
         try {
-
             //const response = await fetch(`http://localhost:5024/channels/${id}`);
-
             const response = await fetch(`https://gamerz-ac-nv-2.onrender.com/channels/${id}`);
-
 
             if (!response.ok) {
                 throw new Error("Erreur lors de la récupération du channel");
@@ -69,11 +58,8 @@ console.log("id", id);
     //const [message, setMessage] = useState<Message | null>(null);
     const fetchMessages = async () => {
         try {
-
             //const response = await fetch(`http://localhost:5024/messages/channel/${id}`); 
-
             const response = await fetch(`https://gamerz-ac-nv-2.onrender.com/messages/channel/${id}`); 
-
             console.log("📨 Récupération des messages du salon :", id);
     
             if (!response.ok) {
@@ -83,7 +69,6 @@ console.log("id", id);
             const data = await response.json();
 
             // MODIF DE VENDREDI essayer de récupérer le message avec les bons types
-            //const formattedMessages: Message[] = data.map((msg: any) => {
             const formattedMessages: Message[] = data.map((msg: { _id: string; description: string; sender: { _id: string; username: string } | string; createdAt: string }) => 
                 {
                 const senderObj = msg.sender;
@@ -135,13 +120,6 @@ console.log("id", id);
             }
         });
         
-        // socketRef.current.on("message", (data: { text: string; senderId: string }) => {
-            //     console.log("📥 Reçu du serveur :", data);
-            //     if (!data.text.trim()) return;
-            //     const fromSelf = data.senderId === socketRef.current?.id;
-            //     setMessages(prev => [...prev, { id: Date.now().toString(), description: data.text, fromSelf, createdAt: new Date().toISOString(), sender: data.senderId, senderName: null }]);
-            // });
-            
             // MODIF DE VENDREDI suppression de trim, ca bug
             socketRef.current.on("message", (data) => {
                 console.log("📥 Nouveau message reçu :", data);
@@ -168,12 +146,12 @@ console.log("id", id);
                 // IL FAUT METTRE data.message.description !!!
                 setMessages(prev => [...prev, 
                     { 
-                        id: Date.now().toString(), 
-            description: data.message.description, 
-            fromSelf, 
-            createdAt: data.message.createdAt, 
-            sender: data.message.sender, 
-            senderName: data.message.sendername ?? null 
+                        id: data.message._id || Date.now().toString(),
+                        description: data.message.description, 
+                        fromSelf, 
+                        createdAt: data.message.createdAt, 
+                        sender: data.message.sender, 
+                        senderName: data.message.sendername ?? null 
                     }]);
                 console.log("messages après reception MESSAGES", messages);
                 console.log("messages après reception DATA.MESSAGES", data.message);
@@ -186,6 +164,7 @@ console.log("id", id);
             };
         }, [id]);
         
+
         const send = () => {
             if (inputValue.trim() === "") return;
             //MODIF DE VENDREDI ajout de la structure du message avec les bons types
@@ -203,12 +182,6 @@ console.log("id", id);
             setInputValue(""); // on vide le champ
         };
         
-        // const send = () => {
-            //     if (inputValue.trim() === "") return;
-            //     socketRef.current?.emit("message", inputValue, "senderId");
-            //     setInputValue("");
-            // };
-            
             if (!channel) {
                 return <div>Loading...</div>;
             }

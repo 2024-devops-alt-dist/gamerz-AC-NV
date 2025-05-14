@@ -7,6 +7,7 @@ type User = {
   email: string;
   motivation: string;
   status: string;
+  role: string;
   isAuthenticated: boolean;
 };
 
@@ -77,6 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               email: data.email || '',
               motivation: data.motivation || '',
               status: data.status || '',
+              role: data.role || '', // Ensure 'role' is included
               isAuthenticated: true,
             });
   

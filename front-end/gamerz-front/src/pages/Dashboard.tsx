@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SearchUser from "../components/SearchUser";
 
+
 function Dashboard() {
   interface User {
     _id: string;
