@@ -53,23 +53,30 @@ cd frontend/gamerz-front
 npm install
 npm run dev
 ```
-Méthode	URL	Description
-GET	/users	Récupérer tous les utilisateurs
-GET	/channels	Récupérer les salons
-GET	/messages	Récupérer tous les messages
-POST	/auth	Authentification (login)
-GET	/me	Vérifie la session via cookie
+## 📬 API disponibles
+
+| Méthode | URL                                         | Description                      |
+|--------:|---------------------------------------------|----------------------------------|
+| `GET`   | `/users`                                    | Récupérer tous les utilisateurs  |
+| `GET`   | `/channels`                                 | Récupérer les salons             |
+| `GET`   | `/messages`                                 | Récupérer tous les messages      |
+| `POST`  | `/auth`                                     | Authentification (login)         |
+| `GET`   | `/me`                                       | Vérifie la session via cookie    |
+
+---
 
 expemples d'appels API : 
-GET https://gamerz-ac-nv-2.onrender.com/users
-GET https://gamerz-ac-nv-2.onrender.com/channels
-GET https://gamerz-ac-nv-2.onrender.com/messages
+- GET https://gamerz-ac-nv-2.onrender.com/users
+- GET https://gamerz-ac-nv-2.onrender.com/channels
+- GET https://gamerz-ac-nv-2.onrender.com/messages
 
-POST https://gamerz-ac-nv-2.onrender.com/auth
+- POST https://gamerz-ac-nv-2.onrender.com/auth
+ ```
 {
 "username" : "caro",
 "password" : "caro"
 }
+ ```
 
 déployé sur VERCEL : 
 https://gamerz-ac-nv-fork2.vercel.app/
