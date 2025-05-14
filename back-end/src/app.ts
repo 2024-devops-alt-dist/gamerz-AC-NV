@@ -59,6 +59,8 @@ const io = new Server(server, {
 });
 
 
+const usersInRooms: { [roomId: string]: { socketId: string; username: string }[] } = {};
+
 
 io.on("connection", (socket: Socket) => {
     console.log(`🔌 Client connecté: ${socket.id}`);
@@ -74,19 +76,26 @@ io.on("connection", (socket: Socket) => {
                 io.to(channelId).emit("userList", Array.from(users));
             }
         });
+
+         // Enlève l'utilisateur de tous les salons
+         for (const roomId in usersInRooms) {
+            usersInRooms[roomId] = usersInRooms[roomId].filter(u => u.socketId !== socket.id);
+            io.to(roomId).emit("users", usersInRooms[roomId]);
+        }
     });
 
-    socket.on("join", (channelId: string) => {
+    socket.on("join", (channelId: string, username: string) => {
         console.log(`🔑 Client ${socket.id} a rejoint le canal ${channelId}`);
         socket.join(channelId);
-        if (!channelUsersMap.has(channelId)) {
-            channelUsersMap.set(channelId, new Set());
-        }
+        if (!usersInRooms[channelId]) usersInRooms[channelId] = [];
+
+        usersInRooms[channelId].push({ socketId: socket.id, username });
+
         channelUsersMap.get(channelId)?.add(socket.id);
         console.log(`🔑 Utilisateurs dans le canal ${channelId}:`, Array.from(channelUsersMap.get(channelId) || []));
 
-        // Emit la liste des utilisateurs dans le canal 
-        io.to(channelId).emit("userList", Array.from(channelUsersMap.get(channelId) || []));
+        // Envoie la liste mise à jour à tous les membres du salon
+        io.to(channelId).emit("users", usersInRooms[channelId]);
     });
 
     socket.on("message", (message) => {
